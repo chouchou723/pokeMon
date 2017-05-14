@@ -1,64 +1,91 @@
-const Koa = require('koa');
-const bodyParser = require('koa-bodyparser');
-const Router = require('koa-router');
-const rp = require('request-promise')
+const Koa = require('koa')
+const bodyParser = require('koa-bodyparser')
+const Router = require('koa-router')
+const axios = require('axios')
 const fs = require("fs")
-const app = new Koa();
-const router = new Router();
-const request = rp.defaults({'proxy':'http://localhost'})
+const cors = require('kcors')
+const app = new Koa()
+const router = new Router()
+const cheerio = require('cheerio')
+const qs = require('qs')
 
 app
-.use(bodyParser())
-.use(router.routes())
-.use(router.allowedMethods())
+  .use(cors())
+  .use(bodyParser())
+  .use(router.routes())
+  .use(router.allowedMethods())
+
+axios.defaults.url = 'http://www.pokemon.jp/zukan/scripts/data/top_zukan.json'
+
+const fetch_top_zukan = axios.create({
+  method: 'get',
+});
+const DL_top_zukan = axios.create({
+  method: 'get',
+  responseType: 'stream'
+});
+const pokemon_wiki = axios.create({
+  method: 'get',
+});
 
 
-const options = {
-  uri: 'http://www.pokemon.jp/api.php',
-  headers: {
-    'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; rv:51.0) Gecko/20100101 Firefox/51.0'
-  },
-  json: true 
-};
-const topZukan = {'uri':'http://www.pokemon.jp/zukan/scripts/data/top_zukan.json'}
 
-const jsonPath= `${__dirname}/top_zukan.json`
-const file = require(jsonPath)
-
+const jsonPath = `${__dirname}/top_zukan.json`
 console.log('zukan_no检查中')
-if(fs.existsSync(jsonPath)){
-  request(Object.assign({}, options, topZukan))
-    .then((json) => {
-      if(json[json.length-1].zukan_no === file[file.length-1].zukan_no){
-        console.log('zukan_no已最新')
-      }else{
-        console.log('zukan_no需要更新，下载中')
-        request(Object.assign({}, options, topZukan))
-          .pipe(fs.createWriteStream(jsonPath))
-         console.log("zukan_no下载完成。");
+
+if (fs.existsSync(jsonPath)) {
+  fetch_top_zukan()
+    .then(res => {
+      let json = res.data
+      const file = JSON.parse(fs.readFileSync(jsonPath))
+      if (json[json.length - 1].zukan_no === file[file.length - 1].zukan_no) {
+        return console.log('zukan_no已最新')
       }
-    }).catch((err) => {
-      console.log(err)
+      DL_top_zukan()
+        .then(res => {
+          console.log('zukan_no需要更新')
+          res.data.pipe(fs.createWriteStream(jsonPath))
+          console.log("zukan_no更新完成。")
+        })
     })
-}else{
-  console.log('没有zukan_no，下载中')
-  request(Object.assign({}, options, topZukan))
-    .pipe(fs.createWriteStream(jsonPath))
-  console.log("zukan_no下载完成。");
+    .catch(function(error) {
+      console.log(error);
+    });
+} else {
+  DL_top_zukan()
+    .then(res => {
+      console.log('没有zukan_no，下载中')
+      res.data.pipe(fs.createWriteStream(jsonPath))
+      console.log("zukan_no下载完成。")
+    })
 }
 
 
+router.post('/api/detail',async (ctx, next) => {
+  let link = ctx.request.body.link
+  const getDetail = (link) => new Promise((resolve, reject) => 
+    axios.get(`http://www.pokemon.jp/zukan/detail/${link}`)
+    .then(res => {
+      const $ = cheerio.load(res.data)
+      resolve({name:$('.name').eq(0).text()})
+    })
+    .catch(err => reject(err))
+  )
+  ctx.type = 'application/json';
+  ctx.body = await getDetail(link)
+})
 
-router.post('/api',async (ctx, next) => {
-  let id = ctx.request.body.id;
+router.get('/api/:id',async (ctx, next) => {
+  const file = JSON.parse(fs.readFileSync(jsonPath))
+  let id = ctx.params.id;
   const getApi = (id) => new Promise((resolve, reject) => 
-    request(Object.assign({}, options, {method: 'POST',form:file[id]}))
-    .then((json) => resolve(json))
-    .catch((err) => reject(err))
+    axios.post('http://www.pokemon.jp/api.php',qs.stringify(file[id]))
+    .then(json => resolve(json.data))
+    .catch(err => reject(err))
   )
   ctx.type = 'application/json';
   ctx.body = await getApi(id)
-});
+})
 
 app.listen(3000);
-console.log('app started at port 3000...'); 
+console.log('app started at port 3000...');
