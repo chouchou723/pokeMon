@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node-dev app.js",
+    "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
@@ -15,10 +15,7 @@
     "kcors": "^2.2.1",
     "koa": "^2.2.0",
     "koa-bodyparser": "^3.2.0",
-    "koa-router": "next",
-    "qs": "^6.4.0",
-    "request": "^2.81.0",
-    "request-promise": "^4.2.0"
+    "koa-router": "next"
   },
   "devDependencies": {}
 }

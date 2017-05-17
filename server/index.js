@@ -17,6 +17,7 @@ app
 
 axios.defaults.url = 'http://www.pokemon.jp/zukan/scripts/data/top_zukan.json'
 
+
 const fetch_top_zukan = axios.create({
   method: 'get',
 });
@@ -73,6 +74,22 @@ router.post('/api/detail',async (ctx, next) => {
   )
   ctx.type = 'application/json';
   ctx.body = await getDetail(link)
+})
+
+router.post('/api/searc/:id',async (ctx, next) => {
+  let search = ctx.request.body.search
+  const file = JSON.parse(fs.readFileSync(jsonPath))
+  let result_file = file.filter((x) => {
+    return x.zukan_no.indexOf(search)>=0 || x.pokemon_name.indexOf(search)>=0
+  });
+  let id = ctx.params.id;
+  const getSearch = (id) => new Promise((resolve, reject) => 
+      axios.post('http://www.pokemon.jp/api.php',qs.stringify(result_file[id]))
+        .then(json => resolve(json.data))
+        .catch(err => reject(err))
+  )
+  ctx.type = 'application/json';
+  ctx.body = await getSearch(id)
 })
 
 router.get('/api/:id',async (ctx, next) => {
