@@ -4,10 +4,13 @@ const Router = require('koa-router')
 const axios = require('axios')
 const fs = require("fs")
 const cors = require('kcors')
-const app = new Koa()
-const router = new Router()
 const cheerio = require('cheerio')
 const qs = require('qs')
+
+const app = new Koa()
+const router = new Router({
+  prefix: '/api'
+})
 
 app
   .use(cors())
@@ -16,7 +19,10 @@ app
   .use(router.allowedMethods())
 
 axios.defaults.url = 'http://www.pokemon.jp/zukan/scripts/data/top_zukan.json'
-
+axios.defaults.proxy = {
+    host: '10.220.2.48',
+    port: 8080,
+  }
 
 const fetch_top_zukan = axios.create({
   method: 'get',
@@ -61,8 +67,9 @@ if (fs.existsSync(jsonPath)) {
     })
 }
 
+const file = JSON.parse(fs.readFileSync(jsonPath))
 
-router.post('/api/detail',async (ctx, next) => {
+router.post('/detail',async (ctx, next) => {
   let link = ctx.request.body.link
   const getDetail = (link) => new Promise((resolve, reject) => 
     axios.get(`http://www.pokemon.jp/zukan/detail/${link}`)
@@ -76,13 +83,13 @@ router.post('/api/detail',async (ctx, next) => {
   ctx.body = await getDetail(link)
 })
 
-router.post('/api/searc/:id',async (ctx, next) => {
+router.post('/search/:id',async (ctx, next) => {
+  let id = ctx.params.id
   let search = ctx.request.body.search
-  const file = JSON.parse(fs.readFileSync(jsonPath))
-  let result_file = file.filter((x) => {
-    return x.zukan_no.indexOf(search)>=0 || x.pokemon_name.indexOf(search)>=0
-  });
-  let id = ctx.params.id;
+  let result_file = file.filter(x => {
+    return x.zukan_no.indexOf(search)>=0 || 
+      x.pokemon_name.indexOf(search)>=0 
+  })
   const getSearch = (id) => new Promise((resolve, reject) => 
       axios.post('http://www.pokemon.jp/api.php',qs.stringify(result_file[id]))
         .then(json => resolve(json.data))
@@ -92,8 +99,24 @@ router.post('/api/searc/:id',async (ctx, next) => {
   ctx.body = await getSearch(id)
 })
 
-router.get('/api/:id',async (ctx, next) => {
-  const file = JSON.parse(fs.readFileSync(jsonPath))
+router.post('/filter/:id',async (ctx, next) => {
+  let id = ctx.params.id
+  let tokusei = ctx.request.body.tokusei
+  let type = ctx.request.body.type
+  let takasa = ctx.request.body.takasa
+  let omosa = ctx.request.body.omosa
+  let result_file = file.filter(x => x.type.indexOf(type)>=0)
+  console.log(result_file);
+  const getSearch = (id) => new Promise((resolve, reject) => 
+    axios.post('http://www.pokemon.jp/api.php',qs.stringify(result_file[id]))
+      .then(json => resolve(json.data))
+      .catch(err => reject(err))
+  )
+  ctx.type = 'application/json';
+  ctx.body = await getSearch(id)
+})
+
+router.get('/:id',async (ctx, next) => {
   let id = ctx.params.id;
   const getApi = (id) => new Promise((resolve, reject) => 
     axios.post('http://www.pokemon.jp/api.php',qs.stringify(file[id]))
