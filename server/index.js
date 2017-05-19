@@ -20,9 +20,9 @@ app
 
 axios.defaults.url = 'http://www.pokemon.jp/zukan/scripts/data/top_zukan.json'
 axios.defaults.proxy = {
-    host: '10.220.2.48',
-    port: 8080,
-  }
+  host: '10.220.2.48',
+  port: 8080,
+}
 
 const fetch_top_zukan = axios.create({
   method: 'get',
@@ -45,7 +45,7 @@ if (fs.existsSync(jsonPath)) {
     .then(res => {
       let json = res.data
       const file = JSON.parse(fs.readFileSync(jsonPath))
-      if (json[json.length - 1].zukan_no === file[file.length - 1].zukan_no) {
+      if (json.length === file.length) {
         return console.log('zukan_no已最新')
       }
       DL_top_zukan()
@@ -69,13 +69,13 @@ if (fs.existsSync(jsonPath)) {
 
 const file = JSON.parse(fs.readFileSync(jsonPath))
 
-router.post('/detail',async (ctx, next) => {
+router.post('/detail', async(ctx, next) => {
   let link = ctx.request.body.link
-  const getDetail = (link) => new Promise((resolve, reject) => 
+  const getDetail = (link) => new Promise((resolve, reject) =>
     axios.get(`http://www.pokemon.jp/zukan/detail/${link}`)
     .then(res => {
       const $ = cheerio.load(res.data)
-      resolve({name:$('.name').eq(0).text()})
+      resolve({ name: $('.name').eq(0).text() })
     })
     .catch(err => reject(err))
   )
@@ -83,49 +83,104 @@ router.post('/detail',async (ctx, next) => {
   ctx.body = await getDetail(link)
 })
 
-router.post('/search/:id',async (ctx, next) => {
+router.post('/search/:id', async(ctx, next) => {
   let id = ctx.params.id
   let search = ctx.request.body.search
   let result_file = file.filter(x => {
-    return x.zukan_no.indexOf(search)>=0 || 
-      x.pokemon_name.indexOf(search)>=0 
+    return x.zukan_no.indexOf(search) >= 0 ||
+      x.pokemon_name.indexOf(search) >= 0
   })
-  const getSearch = (id) => new Promise((resolve, reject) => 
-      axios.post('http://www.pokemon.jp/api.php',qs.stringify(result_file[id]))
-        .then(json => resolve(json.data))
-        .catch(err => reject(err))
+  const getSearch = (id) => new Promise((resolve, reject) =>
+    axios.post('http://www.pokemon.jp/api.php', qs.stringify(result_file[id]))
+    .then(json => resolve(json.data))
+    .catch(err => reject(err))
   )
   ctx.type = 'application/json';
   ctx.body = await getSearch(id)
 })
 
-router.post('/filter/:id',async (ctx, next) => {
-  let id = ctx.params.id
-  let tokusei = ctx.request.body.tokusei
-  let type = ctx.request.body.type
-  let takasa = ctx.request.body.takasa
-  let omosa = ctx.request.body.omosa
-  let result_file = file.filter(x => x.type.indexOf(type)>=0)
-  console.log(result_file);
-  const getSearch = (id) => new Promise((resolve, reject) => 
-    axios.post('http://www.pokemon.jp/api.php',qs.stringify(result_file[id]))
+router.post('/filter/:id', 
+  async(ctx, next) => {
+    let type = ctx.request.body.type
+    if (type) {
+      ctx.result_1 = file.filter(x => x.type.indexOf(type) >= 0)
+    } else {
+      ctx.result_1 = file
+    }
+    await next()
+  },
+  async(ctx, next) => {
+    let tokusei = ctx.request.body.tokusei
+    if (tokusei) {
+      ctx.result_2 = ctx.result_1.filter(x => x.tokusei === tokusei)
+    } else {
+      ctx.result_2 = ctx.result_1
+    }
+    await next()
+  },
+  async(ctx, next) => {
+    let takasa = ctx.request.body.takasa
+    let low = 0,
+      normal = 1.1,
+      high = 2.1
+    if (takasa) {
+      switch (takasa) {
+        case 'low':
+          ctx.result_3 = ctx.result_2.filter(x => x.takasa >= low && x.takasa < normal)
+          break;
+        case 'normal':
+          ctx.result_3 = ctx.result_2.filter(x => x.takasa < high && x.takasa >= normal)
+          break;
+        case 'high':
+          ctx.result_3 = ctx.result_2.filter(x => x.takasa >= high)
+          break;
+      }
+    } else {
+      ctx.result_3 = ctx.result_2
+    }
+    await next()
+  },
+  async(ctx, next) => {
+    let id = ctx.params.id
+    let omosa = ctx.request.body.omosa
+    let light = 0,
+      normal = 35.1,
+      heavy = 100
+    if (omosa) {
+      switch (omosa) {
+        case 'light':
+          ctx.result_4 = ctx.result_3.filter(x => x.omosa >= light && x.omosa < normal)
+          break;
+        case 'normal':
+          ctx.result_4 = ctx.result_3.filter(x => x.omosa < heavy && x.omosa >= normal)
+          break;
+        case 'heavy':
+          ctx.result_4 = ctx.result_3.filter(x => x.omosa >= heavy)
+          break;
+      }
+    } else {
+      ctx.result_4 = ctx.result_3
+    }
+    const getFilter = (id) => new Promise((resolve, reject) =>
+      axios.post('http://www.pokemon.jp/api.php', qs.stringify(ctx.result_4[id]))
       .then(json => resolve(json.data))
       .catch(err => reject(err))
-  )
-  ctx.type = 'application/json';
-  ctx.body = await getSearch(id)
-})
+    )
+    ctx.type = 'application/json';
+    ctx.body = await getFilter(id)
+  })
 
-router.get('/:id',async (ctx, next) => {
+router.get('/:id', async(ctx, next) => {
   let id = ctx.params.id;
-  const getApi = (id) => new Promise((resolve, reject) => 
-    axios.post('http://www.pokemon.jp/api.php',qs.stringify(file[id]))
+  const getApi = (id) => new Promise((resolve, reject) =>
+    axios.post('http://www.pokemon.jp/api.php', qs.stringify(file[id]))
     .then(json => resolve(json.data))
     .catch(err => reject(err))
   )
   ctx.type = 'application/json';
   ctx.body = await getApi(id)
 })
+
 
 app.listen(3000);
 console.log('app started at port 3000...');
