@@ -19,10 +19,7 @@ app
   .use(router.allowedMethods())
 
 axios.defaults.url = 'http://www.pokemon.jp/zukan/scripts/data/top_zukan.json'
-axios.defaults.proxy = {
-  host: '10.220.2.48',
-  port: 8080,
-}
+
 
 const fetch_top_zukan = axios.create({
   method: 'get',
@@ -99,7 +96,7 @@ router.post('/search/:id', async(ctx, next) => {
   ctx.body = await getSearch(id)
 })
 
-router.post('/filter/:id', 
+router.post('/filter/:id',
   async(ctx, next) => {
     let type = ctx.request.body.type
     if (type) {
@@ -124,45 +121,70 @@ router.post('/filter/:id',
       normal = 1.1,
       high = 2.1
     if (takasa) {
-      switch (takasa) {
-        case 'low':
-          ctx.result_3 = ctx.result_2.filter(x => x.takasa >= low && x.takasa < normal)
-          break;
-        case 'normal':
-          ctx.result_3 = ctx.result_2.filter(x => x.takasa < high && x.takasa >= normal)
-          break;
-        case 'high':
-          ctx.result_3 = ctx.result_2.filter(x => x.takasa >= high)
-          break;
-      }
+      ctx.result_3 = ctx.result_2.filter(x => {
+        switch (takasa) {
+          case 'low':
+            return x.takasa >= low && x.takasa < normal
+          case 'normal':
+            return x.takasa < high && x.takasa >= normal
+          case 'high':
+            return x.takasa >= high
+        }
+      })
     } else {
       ctx.result_3 = ctx.result_2
     }
     await next()
   },
   async(ctx, next) => {
-    let id = ctx.params.id
     let omosa = ctx.request.body.omosa
     let light = 0,
       normal = 35.1,
       heavy = 100
     if (omosa) {
-      switch (omosa) {
-        case 'light':
-          ctx.result_4 = ctx.result_3.filter(x => x.omosa >= light && x.omosa < normal)
-          break;
-        case 'normal':
-          ctx.result_4 = ctx.result_3.filter(x => x.omosa < heavy && x.omosa >= normal)
-          break;
-        case 'heavy':
-          ctx.result_4 = ctx.result_3.filter(x => x.omosa >= heavy)
-          break;
-      }
+      ctx.result_4 = ctx.result_3.filter(x => {
+        switch (omosa) {
+          case 'light':
+            return x.omosa >= light && x.omosa < normal
+          case 'normal':
+            return x.omosa < heavy && x.omosa >= normal
+          case 'heavy':
+            return x.omosa >= heavy
+        }
+      })
     } else {
       ctx.result_4 = ctx.result_3
     }
+    await next()
+  },
+  async(ctx, next) => {
+    let id = ctx.params.id
+    let regionSearch = ctx.request.body.regionSearch
+    if (regionSearch) {
+      ctx.result_5 = ctx.result_4.filter(x => {
+        let zukanNum = parseInt(x.zukan_no, 10)
+        switch (regionSearch) {
+          case 'kanto':
+            return zukanNum >= 1 && zukanNum <= 151
+          case 'jhoto':
+            return zukanNum >= 152 && zukanNum <= 251
+          case 'hoenn':
+            return zukanNum >= 252 && zukanNum <= 386
+          case 'sinnoh':
+            return zukanNum >= 387 && zukanNum <= 493
+          case 'isshu':
+            return zukanNum >= 494 && zukanNum <= 649
+          case 'kalos':
+            return zukanNum >= 650 && zukanNum <= 721
+          case 'arolla':
+            return zukanNum >= 722 && zukanNum <= 801
+        }
+      })
+    } else {
+      ctx.result_5 = ctx.result_4
+    }
     const getFilter = (id) => new Promise((resolve, reject) =>
-      axios.post('http://www.pokemon.jp/api.php', qs.stringify(ctx.result_4[id]))
+      axios.post('http://www.pokemon.jp/api.php', qs.stringify(ctx.result_5[id]))
       .then(json => resolve(json.data))
       .catch(err => reject(err))
     )
