@@ -72,7 +72,6 @@ router.post('/detail', async(ctx, next) => {
     axios.get(`http://www.pokemon.jp/zukan/detail/${link}`)
     .then(res => {
       const $ = cheerio.load(res.data)
-      console.log($('.pokemon-form .list').map((i, el) => $(el).find('.num').text()).get());
       resolve({ 
         num: $('.title .num').text(),
         name: $('.title .name').text(),
