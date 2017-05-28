@@ -72,7 +72,36 @@ router.post('/detail', async(ctx, next) => {
     axios.get(`http://www.pokemon.jp/zukan/detail/${link}`)
     .then(res => {
       const $ = cheerio.load(res.data)
-      resolve({ name: $('.name').eq(0).text() })
+      resolve({ 
+        num: $('.title .num').text(),
+        name: $('.title .name').text(),
+        profilePhoto: $('.profile-phto img').attr('src'),
+        type: $('.type .pokemon-type li a span').map((i, el) => $(el).text()).get().join(','),
+        weaknesses: $('.weaknesses .pokemon-type li a span').map((i, el) => $(el).text()).get().join(','),
+        details:[
+          $('.pokemon-details').find('.details').eq(0).find('li').eq(0).find('p').eq(1).text(),
+          $('.pokemon-details').find('.details').eq(0).find('li').eq(1).find('.txts').eq(0).find('p').text(),
+          $('.pokemon-details').find('.details').eq(1).find('li').eq(0).find('p').eq(1).text(),
+          $('.pokemon-details').find('.details').eq(1).find('li').eq(1).find('p').eq(1).text(),
+          $('.pokemon-details').find('.details').eq(1).find('li').eq(2).find('.sex span').map((i, el) => $(el).attr('class')).get().join(','),
+        ],
+        pokemonForm: $('.pokemon-form .list').children('li').map((i, el) => {
+          return {
+            link:$(el).children('a').attr('href').replace('/zukan/detail/',''),
+            img:$(el).find('img').attr('src'),
+            num:$(el).find('.num').text(),
+            name:$(el).find('.name').text()
+          }
+        }).get(),
+        evolution:$('.evolution .list').children('li').map((i, el) => {
+          return  {
+            link:$(el).children('a').attr('href').replace('/zukan/detail/',''),
+            img:$(el).find('img').attr('src'),
+            num:$(el).find('.num').text(),
+            name:$(el).find('.name').text()
+          }
+        }).get()
+      })
     })
     .catch(err => reject(err))
   )
