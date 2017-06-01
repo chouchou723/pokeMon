@@ -1,11 +1,9 @@
-import { GET_DATA } from '../actions'
-
-const reducer = (state = {}, action) => {
+const reducer = (state = {datas:[]}, action) => {
   switch (action.type) {
-    case  GET_DATA:
+    case  'GET_DATA':
       return {
         ...state,
-        data: action.json.pokemon_name
+        datas: action.json
       }
     default:
       return state

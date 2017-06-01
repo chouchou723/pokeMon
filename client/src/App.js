@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
-import Cards from './components/Cards'
+import { Container } from 'semantic-ui-react'
+import Cards from './containers/Cards'
 import Headers from './components/Headers'
+import Inputs from './components/Inputs'
 import './style/App.css'
 
 
@@ -8,8 +10,11 @@ class App extends Component {
   render() {
     return (
       <div>
-        <Headers />
-        <Cards />
+      	<Headers />
+      	<Container>
+      	  <Inputs />
+      	  <Cards />
+      	</Container>
       </div>
     );
   }

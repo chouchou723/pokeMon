@@ -1,3 +1,6 @@
 #root .ui.card, .ui.cards>.card {
-	width: 162px;
+	max-width: 162px;
+}
+.ui.three.cards{
+	max-width: 530px;
 }
