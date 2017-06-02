@@ -1,6 +1,57 @@
-#root .ui.card, .ui.cards>.card {
-	max-width: 162px;
+.ui.card button{
+	color: white;
 }
-.ui.three.cards{
-	max-width: 530px;
+.ui.card button.ty1 {
+  background: #b1b1b1;
+}
+.ui.card button.ty2 {
+  background: #e4653f;
+}
+.ui.card button.ty3 {
+  background: #50abda;
+}
+.ui.card button.ty4 {
+  background: #9ac30e;
+}
+.ui.card button.ty5 {
+  background: #e8c71a;
+}
+.ui.card button.ty6 {
+  background: #53c4e5;
+}
+.ui.card button.ty7 {
+  background: #e99a3f;
+}
+.ui.card button.ty8 {
+  background: #ba79c1;
+}
+.ui.card button.ty9 {
+  background: #c8a841;
+}
+.ui.card button.ty10 {
+  background: #5e9fe2;
+}
+.ui.card button.ty11 {
+  background: #e885b2;
+}
+.ui.card button.ty12 {
+  background: #6cbe50;
+}
+.ui.card button.ty13 {
+  background: #b08754;
+}
+.ui.card button.ty14 {
+  background: #756eb4;
+}
+.ui.card button.ty15 {
+  background: #6c81c8;
+}
+.ui.card button.ty16 {
+  background: #5a3c1e;
+}
+.ui.card button.ty17 {
+  background: #919191;
+}
+.ui.card button.ty18 {
+  background: #e06cbb;
 }

@@ -4,8 +4,8 @@ import { createStore, applyMiddleware, compose } from 'redux'
 import { Provider } from 'react-redux'
 import reducer from './reducer'
 import thunk from 'redux-thunk'
-import initFetch from './actions'
-import App from './App';
+import {initFetch} from './actions'
+import App from './components/App';
 import 'semantic-ui-css/semantic.min.css';
 import registerServiceWorker from './registerServiceWorker';
 
