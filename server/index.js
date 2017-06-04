@@ -19,10 +19,6 @@ app
   .use(router.allowedMethods())
 
 axios.defaults.url = 'http://www.pokemon.jp/zukan/scripts/data/top_zukan.json'
-axios.defaults.proxy = {
-  host: '10.220.2.48',
-  port: 8080,
-}
 
 const fetch_top_zukan = axios.create({
   method: 'get',
@@ -224,7 +220,7 @@ router.post('/filter/:id',
     ctx.body = await getFilter(id)
   })
 
-router.get('/:id', async(ctx, next) => {
+router.get('/init/:id', async(ctx, next) => {
   let id = ctx.params.id;
   const getApi = (id) => new Promise((resolve, reject) =>
     axios.post('http://www.pokemon.jp/api.php', qs.stringify(file[id]))

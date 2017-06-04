@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Container } from 'semantic-ui-react'
+import { connect } from 'react-redux'
+import { Container, Loader, Grid, Dropdown } from 'semantic-ui-react'
 import Cards from '../containers/Cards'
 import Headers from './Headers'
 import Inputs from './Inputs'
@@ -33,17 +34,40 @@ class App extends Component {
     }
   }
   render() {
+    let {isdisplay} = this.props
     return (
       <div>
-      	<Headers />
-      	<Container>
-      	  <Inputs />
+        <Headers />
+        <Container>
+        <Grid divided='vertically'>
+          <Grid.Row columns={2}>
+            <Grid.Column>
+              <Inputs />
+            </Grid.Column>
+            <Grid.Column>
+              <Dropdown text='Filter' icon='filter' floating labeled button className='icon'>
+                  <Dropdown.Menu>
+                    <Dropdown.Header icon='tags' content='Filter by tag' />
+                    <Dropdown.Item>Important</Dropdown.Item>
+                    <Dropdown.Item>Announcement</Dropdown.Item>
+                    <Dropdown.Item>Discussion</Dropdown.Item>
+                  </Dropdown.Menu>
+                </Dropdown>
+            </Grid.Column>
+          </Grid.Row>
+          </Grid>
           <Cards colorS={this.colorS} />
-      	  <More />
-      	</Container>
+          {isdisplay?<Loader active inline='centered' size='large' />:<Loader disabled inline='centered' size='large' />}
+          {!isdisplay?<More />:''}
+        </Container>
       </div>
     );
   }
 }
 
-export default App;
+const mapStateToProps = (state) => {
+  return {
+    isdisplay: state.isdisplay
+  }
+}
+export default connect(mapStateToProps)(App)

@@ -18,7 +18,7 @@ class Inputs extends React.Component {
 		return (
 	  	<Input type='text' placeholder='Search...' action >
 	  		<input onChange={this.handleChange} />
-	  		<Button icon= 'search' onClick={()=>dispatch(searchFetch(value))} />
+	  		<Button icon= 'search' onClick={()=>dispatch(searchFetch(value,9))} />
 	  	</Input>
 		)
 	}

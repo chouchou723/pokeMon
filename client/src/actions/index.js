@@ -1,11 +1,12 @@
-const baseUrl = 'http://10.220.196.18:3000'
+const baseUrl = 'http://localhost:3000'
 
 
 export const initFetch = (idLimit) => 
   async dispatch => {
+    dispatch({type:'LOADING'})
     let arr = []
     for (var id = 0; id < idLimit; id++) {
-      await fetch(`${baseUrl}/api/${id}`)
+      await fetch(`${baseUrl}/api/init/${id}`)
         .then(res => res.json())
         .then(json => arr.push(json)  )
     }
@@ -15,11 +16,12 @@ export const initFetch = (idLimit) =>
     })
   }
 
-export const moreFetch = (minId,maxId) =>
+export const moreFetch = (minId,maxId,source) =>
   async dispatch => {
+    dispatch({type:'LOADING'})
     let arr = []
     for (var id = minId; id < maxId; id++) {
-      await fetch(`${baseUrl}/api/${id}`)
+      await fetch(`${baseUrl}/api/init/${id}`)
         .then(res => res.json())
         .then(json => arr.push(json)  )
     }
@@ -29,22 +31,22 @@ export const moreFetch = (minId,maxId) =>
     })
   }
 
-export const searchFetch = (val) =>
+export const searchFetch = (val,idLimit) =>
   async dispatch => {
     let arr = []
-    
-    await fetch(`${baseUrl}/api/search/0`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-          search: val,
-        })
-      })
-      .then(res => res.json())
-      .then(json => arr.push(json))
-    console.log(val);
+    for (var id = 0; id < idLimit; id++) {
+      await fetch(`${baseUrl}/api/search/${id}`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                search: val,
+              })
+            })
+            .then(res => res.json())
+            .then(json => {if(json.name!=null)arr.push(json)})
+    }
     dispatch({
       type: 'SEARCH_FETCH',
       json: arr
