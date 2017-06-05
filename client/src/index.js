@@ -17,8 +17,7 @@ const composeEnhancers =
 
 let store = createStore(reducer,composeEnhancers(applyMiddleware(thunk)))
 
-store.dispatch(initFetch(9))
-
+store.dispatch(initFetch(store.getState().page,store.getState().howFetch))
 ReactDOM.render(
 	<Provider store={store}>
 		<App />

@@ -1,54 +1,41 @@
-const baseUrl = 'http://localhost:3000'
+const baseUrl = 'http://10.220.196.18:3000'
 
 
-export const initFetch = (idLimit) => 
-  async dispatch => {
+export const initFetch = (p,howFetch) => 
+  dispatch => {
     dispatch({type:'LOADING'})
-    let arr = []
-    for (var id = 0; id < idLimit; id++) {
-      await fetch(`${baseUrl}/api/init/${id}`)
-        .then(res => res.json())
-        .then(json => arr.push(json)  )
-    }
-    dispatch({
-      type: 'GET_DATA',
-      json: arr
-    })
+    fetch(`${baseUrl}/api/${howFetch}/${p}`)
+      .then(res => res.json())
+      .then(json => dispatch({
+        type: 'GET_DATA',
+        json: json
+      }))
   }
 
-export const moreFetch = (minId,maxId,source) =>
-  async dispatch => {
+
+export const moreFetch = (p,howFetch) =>
+  dispatch => {
+    dispatch({type: 'MORE_FETCH'})
+    dispatch(initFetch(p+1,howFetch))
+  }
+
+export const searchFetch = (p,howFetch,val) =>
+  dispatch => {
     dispatch({type:'LOADING'})
-    let arr = []
-    for (var id = minId; id < maxId; id++) {
-      await fetch(`${baseUrl}/api/init/${id}`)
-        .then(res => res.json())
-        .then(json => arr.push(json)  )
+    fetch(`${baseUrl}/api/${howFetch}/${p}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+          search: val,
+        })
+      })
+      .then(res => res.json())
+      .then(json =>  dispatch({
+        type: 'SEARCH_FETCH',
+        json: json
+      }))
     }
-    dispatch({
-      type: 'MORE_FETCH',
-      json: arr
-    })
-  }
-
-export const searchFetch = (val,idLimit) =>
-  async dispatch => {
-    let arr = []
-    for (var id = 0; id < idLimit; id++) {
-      await fetch(`${baseUrl}/api/search/${id}`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                search: val,
-              })
-            })
-            .then(res => res.json())
-            .then(json => {if(json.name!=null)arr.push(json)})
-    }
-    dispatch({
-      type: 'SEARCH_FETCH',
-      json: arr
-    })
-  }
+   
+  

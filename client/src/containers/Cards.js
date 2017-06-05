@@ -3,10 +3,9 @@ import { connect } from 'react-redux'
 import { Card, Button } from 'semantic-ui-react'
 import '../style/Cards.css'
 
-class Cards extends React.Component {
-render() {
-  let {items, colorS} = this.props
+const Cards = ({items, colorS,initFetch}) => {
 
+  
   return(
     <Card.Group itemsPerRow={3}>
     {
@@ -33,11 +32,11 @@ render() {
     </Card.Group>
   )
 }
-}
 
 const mapStateToProps = (state) => {
   return {
-    items: state.datas,
+    items: state.data
   }
 }
+
 export default connect(mapStateToProps)(Cards)

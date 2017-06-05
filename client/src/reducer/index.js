@@ -1,9 +1,10 @@
 let initState = {
-  datas:[],
-  minId:0,
-  maxId:9,
-  howFetch:'initFetch',
-  isdisplay:true
+  data:[],
+  gap:9,
+  page:0,
+  howFetch:'init',
+  isdisplay:true,
+  noPage: false
 }
 
 const reducer = (state = initState, action) => {
@@ -11,27 +12,25 @@ const reducer = (state = initState, action) => {
     case  'GET_DATA':
       return {
         ...state,
-        datas: action.json,
-        minId: state.minId+9,
-        maxId: state.maxId+9,
-        howFetch:'initFetch',
+        data:action.json.data,
+        noPage:action.json.noPage,
+        howFetch:'init',
         isdisplay:false
       }
     case 'MORE_FETCH':
       return {
         ...state,
-        datas: state.datas.concat(action.json),
-        minId: state.minId+9,
-        maxId: state.maxId+9,
+        page:state.page+1,
         isdisplay:false
       }
     case 'SEARCH_FETCH':
       return {
         ...state,
-        datas: action.json,
-        minId: state.minId+9,
-        maxId: state.maxId+9,
-        howFetch:'searchFetch'
+        data: action.json.data,
+        noPage:action.json.noPage,
+        howFetch:'search',
+        page: 0,
+        isdisplay:false
        }
     case 'LOADING':
       return{

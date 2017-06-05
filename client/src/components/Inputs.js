@@ -13,16 +13,21 @@ class Inputs extends React.Component {
     this.setState({value: e.target.value});
   }
 	render() { 
-		let { dispatch} =this.props
+		let { dispatch, page, howFetch} =this.props
 		let {value} = this.state
 		return (
 	  	<Input type='text' placeholder='Search...' action >
 	  		<input onChange={this.handleChange} />
-	  		<Button icon= 'search' onClick={()=>dispatch(searchFetch(value,9))} />
+	  		<Button icon= 'search' onClick={()=>dispatch(searchFetch(page,'search', value))} />
 	  	</Input>
 		)
 	}
 }
 
-
-export default connect()(Inputs)
+const mapStateToProps = (state) => {
+  return {
+    page: state.page,
+    howFetch: state.howFetch
+  }
+}
+export default connect(mapStateToProps)(Inputs)

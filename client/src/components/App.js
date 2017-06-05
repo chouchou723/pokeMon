@@ -67,7 +67,8 @@ class App extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    isdisplay: state.isdisplay
+    isdisplay: state.isdisplay,
   }
 }
+
 export default connect(mapStateToProps)(App)
