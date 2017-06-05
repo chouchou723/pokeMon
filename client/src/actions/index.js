@@ -1,10 +1,10 @@
-const baseUrl = 'http://10.220.196.18:3000'
+const baseUrl = 'http://localhost:3000'
 
 
-export const initFetch = (p,howFetch) => 
+export const initFetch = () => 
   dispatch => {
     dispatch({type:'LOADING'})
-    fetch(`${baseUrl}/api/${howFetch}/${p}`)
+    fetch(`${baseUrl}/api/init/0`)
       .then(res => res.json())
       .then(json => dispatch({
         type: 'GET_DATA',
@@ -13,16 +13,45 @@ export const initFetch = (p,howFetch) =>
   }
 
 
-export const moreFetch = (p,howFetch) =>
+
+export const moreFetch = (p,val,howFetch) =>
   dispatch => {
-    dispatch({type: 'MORE_FETCH'})
-    dispatch(initFetch(p+1,howFetch))
+    switch(howFetch) {
+      case 'init':
+        dispatch({type:'LOADING'})
+        fetch(`${baseUrl}/api/init/${p+1}`)
+          .then(res => res.json())
+          .then(json => dispatch({
+            type: 'MORE_FETCH',
+            json: json
+          }))
+        break
+      case 'search':
+        dispatch({type:'LOADING'})
+        fetch(`${baseUrl}/api/search/${p+1}`, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({
+                  search: val,
+                })
+              })
+              .then(res => res.json())
+              .then(json =>  dispatch({
+                type: 'MORE_FETCH',
+                json: json
+              }))
+        break
+      default:
+        initFetch(2)
+    }
   }
 
-export const searchFetch = (p,howFetch,val) =>
+export const searchFetch = (val) =>
   dispatch => {
     dispatch({type:'LOADING'})
-    fetch(`${baseUrl}/api/${howFetch}/${p}`, {
+    fetch(`${baseUrl}/api/search/0`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -34,8 +63,11 @@ export const searchFetch = (p,howFetch,val) =>
       .then(res => res.json())
       .then(json =>  dispatch({
         type: 'SEARCH_FETCH',
-        json: json
+        json: json,
+        val
       }))
     }
    
-  
+
+    
+ 

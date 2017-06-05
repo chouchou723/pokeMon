@@ -3,26 +3,21 @@ import { connect } from 'react-redux'
 import { searchFetch } from '../actions'
 import { Button, Input } from 'semantic-ui-react'
 
-class Inputs extends React.Component {
-	constructor(props) {
-    super(props)
-    this.handleChange = this.handleChange.bind(this);
-    this.state = {value:'Search'}
+const Inputs = ({ dispatch, page}) => {
+  let input
+  let onKeyUp = (e) => {
+    e.keyCode === 13 && dispatch(searchFetch(input.value))
   }
-	handleChange(e) {
-    this.setState({value: e.target.value});
-  }
-	render() { 
-		let { dispatch, page, howFetch} =this.props
-		let {value} = this.state
-		return (
-	  	<Input type='text' placeholder='Search...' action >
-	  		<input onChange={this.handleChange} />
-	  		<Button icon= 'search' onClick={()=>dispatch(searchFetch(page,'search', value))} />
-	  	</Input>
-		)
-	}
+  return(
+  <Input type='text' placeholder='Search...' action >
+    <input ref={node => {input = node}} onKeyUp={onKeyUp} />
+    <Button icon= 'search' onClick={()=>dispatch(searchFetch(input.value))} />
+  </Input>
+  )
+  
 }
+  
+
 
 const mapStateToProps = (state) => {
   return {
@@ -30,4 +25,5 @@ const mapStateToProps = (state) => {
     howFetch: state.howFetch
   }
 }
+
 export default connect(mapStateToProps)(Inputs)

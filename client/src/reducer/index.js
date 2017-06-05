@@ -4,7 +4,8 @@ let initState = {
   page:0,
   howFetch:'init',
   isdisplay:true,
-  noPage: false
+  noPage: false,
+  val:''
 }
 
 const reducer = (state = initState, action) => {
@@ -15,11 +16,14 @@ const reducer = (state = initState, action) => {
         data:action.json.data,
         noPage:action.json.noPage,
         howFetch:'init',
+        page: 0,
         isdisplay:false
       }
     case 'MORE_FETCH':
       return {
         ...state,
+        data: state.data.concat(action.json.data),
+        noPage:action.json.noPage,
         page:state.page+1,
         isdisplay:false
       }
@@ -30,10 +34,11 @@ const reducer = (state = initState, action) => {
         noPage:action.json.noPage,
         howFetch:'search',
         page: 0,
-        isdisplay:false
+        isdisplay:false,
+        val:action.val
        }
     case 'LOADING':
-      return{
+      return {
         ...state,
         isdisplay:true
       }

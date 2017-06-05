@@ -19,10 +19,10 @@ app
   .use(router.allowedMethods())
 
 axios.defaults.url = 'http://www.pokemon.jp/zukan/scripts/data/top_zukan.json'
-axios.defaults.proxy = {
+/*axios.defaults.proxy = {
   host: '10.220.2.48',
   port: 8080
-}
+}*/
 const fetch_top_zukan = axios.create({
   method: 'get',
 });
@@ -119,12 +119,11 @@ router.post('/search/:p', async(ctx, next) => {
       x.pokemon_name.indexOf(search) >= 0
   })
   let lastPage = Math.floor(result_file.length/9)
-  console.log(lastPage);
   let arr = []
   for (var id = (0+p)*9; id < (1+p)*9; id++){
     await axios.post('http://www.pokemon.jp/api.php', qs.stringify(result_file[id]))
     .then(json =>  {if(json.data.name!=null) arr.push(json.data)})
-    .catch(err => console.log(err))
+    .catch(err => err)
   }
   /*const getSearch = (id) => new Promise((resolve, reject) =>
     axios.post('http://www.pokemon.jp/api.php', qs.stringify(result_file[id]))
@@ -134,7 +133,7 @@ router.post('/search/:p', async(ctx, next) => {
   ctx.type = 'application/json';
   ctx.body = {
     data:arr,
-    noPage:(p===lastPage)?true:false
+    noPage:(p>=lastPage)?true:false
   }
 })
 

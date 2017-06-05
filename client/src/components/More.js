@@ -3,8 +3,8 @@ import { connect } from 'react-redux'
 import { moreFetch } from '../actions'
 import { Button } from 'semantic-ui-react'
 
-const More = ({ dispatch, page, howFetch }) => (
-  <Button size='large' onClick={()=>dispatch(moreFetch(page,howFetch))}>
+const More = ({ dispatch, page, val, howFetch, noPage }) => (
+  <Button fluid size='large' onClick={()=>dispatch(moreFetch(page,val, howFetch))} style={noPage?{display:'none'}:{}} >
     More
   </Button>
 )
@@ -12,7 +12,9 @@ const More = ({ dispatch, page, howFetch }) => (
 const mapStateToProps = (state) => {
   return {
     page: state.page,
-    howFetch: state.howFetch
+    val: state.val,
+    howFetch: state.howFetch,
+    noPage: state.noPage
   }
 }
 
