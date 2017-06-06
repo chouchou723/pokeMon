@@ -1,14 +1,28 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
-import { Container, Loader, Grid, Dropdown } from 'semantic-ui-react'
+import { Container, Loader, Grid } from 'semantic-ui-react'
 import Cards from '../containers/Cards'
 import Headers from './Headers'
 import Inputs from './Inputs'
 import More from './More'
+import FilterButton from './FilterButton'
+import Filters from '../containers/Filters'
 import '../style/App.css'
 
 
 class App extends Component {
+  constructor(props){
+        super(props)
+        this.handleToggle = this.handleToggle.bind(this);
+        this.state={
+            showFilters:false
+        }
+    }
+  handleToggle() {
+        this.setState({
+            showFilters:!this.state.showFilters
+        })
+    }
   colorS(type){
     let typeArray = ['ノーマル', 'ほのお', 'みず', 'くさ', 'でんき', 'こおり', 'かくとう', 'どく', 'じめん', 'ひこう', 'エスパー', 'むし', 'いわ', 'ゴースト', 'ドラゴン', 'あく', 'はがね', 'フェアリー'];
     switch (type) {
@@ -39,23 +53,16 @@ class App extends Component {
       <div>
         <Headers />
         <Container>
-        <Grid divided='vertically'>
-          <Grid.Row columns={2}>
-            <Grid.Column>
-              <Inputs />
-            </Grid.Column>
-            <Grid.Column>
-              <Dropdown text='Filter' icon='filter' floating labeled button className='icon'>
-                  <Dropdown.Menu>
-                    <Dropdown.Header icon='tags' content='Filter by tag' />
-                    <Dropdown.Item>Important</Dropdown.Item>
-                    <Dropdown.Item>Announcement</Dropdown.Item>
-                    <Dropdown.Item>Discussion</Dropdown.Item>
-                  </Dropdown.Menu>
-                </Dropdown>
-            </Grid.Column>
-          </Grid.Row>
-          </Grid>
+          <Grid container columns={2}>
+              <Grid.Column>
+                <Inputs />
+              </Grid.Column>
+              <Grid.Column>
+                <FilterButton handleToggle={this.handleToggle} />
+              </Grid.Column>
+            </Grid>
+          
+          {this.state.showFilters?<Filters />:null}
           <Cards colorS={this.colorS} />
           {isdisplay?<Loader active inline='centered' size='large' />:<Loader disabled inline='centered' size='large' />}
           {!isdisplay?<More />:''}

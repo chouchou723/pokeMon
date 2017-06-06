@@ -19,10 +19,10 @@ app
   .use(router.allowedMethods())
 
 axios.defaults.url = 'http://www.pokemon.jp/zukan/scripts/data/top_zukan.json'
-/*axios.defaults.proxy = {
+axios.defaults.proxy = {
   host: '10.220.2.48',
   port: 8080
-}*/
+}
 const fetch_top_zukan = axios.create({
   method: 'get',
 });
@@ -125,11 +125,7 @@ router.post('/search/:p', async(ctx, next) => {
     .then(json =>  {if(json.data.name!=null) arr.push(json.data)})
     .catch(err => err)
   }
-  /*const getSearch = (id) => new Promise((resolve, reject) =>
-    axios.post('http://www.pokemon.jp/api.php', qs.stringify(result_file[id]))
-    .then(json => resolve(json.data))
-    .catch(err => reject(err))
-  )*/
+
   ctx.type = 'application/json';
   ctx.body = {
     data:arr,
@@ -137,7 +133,7 @@ router.post('/search/:p', async(ctx, next) => {
   }
 })
 
-router.post('/filter/:id',
+router.post('/filter/:p',
   async(ctx, next) => {
     let type = ctx.request.body.type
     if (type) {
@@ -199,7 +195,7 @@ router.post('/filter/:id',
     await next()
   },
   async(ctx, next) => {
-    let id = ctx.params.id
+    let p = parseInt(ctx.params.p)
     let regionSearch = ctx.request.body.regionSearch
     if (regionSearch) {
       ctx.result_5 = ctx.result_4.filter(x => {
@@ -224,33 +220,33 @@ router.post('/filter/:id',
     } else {
       ctx.result_5 = ctx.result_4
     }
-    const getFilter = (id) => new Promise((resolve, reject) =>
-      axios.post('http://www.pokemon.jp/api.php', qs.stringify(ctx.result_5[id]))
-      .then(json => resolve(json.data))
-      .catch(err => reject(err))
-    )
+    let lastPage = Math.floor(ctx.result_5.length/9)
+    let arr = []
+    for (var id = (0+p)*9; id < (1+p)*9; id++){
+      await axios.post('http://www.pokemon.jp/api.php', qs.stringify(ctx.result_5[id]))
+      .then(json => {if(json.data.name!=null) arr.push(json.data)})
+      .catch(err => err)
+    }
     ctx.type = 'application/json';
-    ctx.body = await getFilter(id)
+    ctx.body = {
+      data:arr,
+      noPage:(p>=lastPage)?true:false
+    }
   })
 
 router.get('/init/:p', async(ctx, next) => {
   let p = parseInt(ctx.params.p)
   let lastPage = Math.floor(file.length/9)
-  /*const getApi = (id) => new Promise((resolve, reject) =>
-    axios.post('http://www.pokemon.jp/api.php', qs.stringify(file[id]))
-    .then(json => resolve(json.data))
-    .catch(err => reject(err))
-  )*/
   let arr = []
   for (var id = (0+p)*9; id < (1+p)*9; id++){
     await axios.post('http://www.pokemon.jp/api.php', qs.stringify(file[id]))
     .then(json => {if(json.data.name!=null) arr.push(json.data)})
-    .catch(err => console.log(err))
+    .catch(err => err)
   }
   ctx.type = 'application/json';
   ctx.body = {
     data:arr,
-    noPage:(p===lastPage)?true:false
+    noPage:(p>=lastPage)?true:false
   }
 })
 

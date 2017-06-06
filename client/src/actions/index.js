@@ -1,5 +1,5 @@
-const baseUrl = 'http://localhost:3000'
-
+// const baseUrl = 'http://localhost:3000'
+const baseUrl = 'http://10.220.196.18:3000'
 
 export const initFetch = () => 
   dispatch => {
