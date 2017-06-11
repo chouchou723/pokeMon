@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import _ from 'lodash/collection'
 const baseUrl = 'http://localhost:3000'
 
@@ -7,6 +8,10 @@ export const SEARCH_FETCH = 'SEARCH_FETCH'
 export const ADD_LOADING = 'ADD_LOADING'
 export const LOADING = 'LOADING'
 export const RANDOM_FETCH = 'RANDOM_FETCH'
+=======
+// const baseUrl = 'http://localhost:3000'
+const baseUrl = 'http://10.220.196.18:3000'
+>>>>>>> 7f09ba55fa04cba6a52468441bc767b4a4f59b7d
 
 const requestData = (p, type) => dispatch => fetch(`${baseUrl}/api/init/${p}`)
   .then(res => res.json())
