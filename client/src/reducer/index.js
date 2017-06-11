@@ -5,7 +5,7 @@ let initState = {
   howFetch:'init',
   isdisplay:true,
   noPage: false,
-  val:''
+  val:[]
 }
 
 const reducer = (state = initState, action) => {
@@ -37,7 +37,23 @@ const reducer = (state = initState, action) => {
         isdisplay:false,
         val:action.val
        }
+    case 'RANDOM_FETCH':
+      return {
+        ...state,
+        data:action.json.data,
+        noPage: action.nopage,
+        howFetch:'random',
+        page: 0,
+        isdisplay:false,
+        val: action.val
+       }
     case 'LOADING':
+      return {
+        ...state,
+        data:[],
+        isdisplay:true
+      }
+    case 'ADD_LOADING':
       return {
         ...state,
         isdisplay:true

@@ -9,14 +9,14 @@ const Inputs = ({ dispatch, page}) => {
     e.keyCode === 13 && dispatch(searchFetch(input.value))
   }
   return(
-  <Input type='text' placeholder='Search...' action >
+  <Input type='text' placeholder='Search...' action fluid >
     <input ref={node => {input = node}} onKeyUp={onKeyUp} />
     <Button icon= 'search' onClick={()=>dispatch(searchFetch(input.value))} />
   </Input>
   )
-  
+
 }
-  
+
 
 
 const mapStateToProps = (state) => {

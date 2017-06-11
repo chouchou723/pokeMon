@@ -66,21 +66,23 @@ if (fs.existsSync(jsonPath)) {
     })
 }
 
-
+router.get('/top_zukan', async(ctx, next) => {
+  ctx.type = 'application/json';
+  ctx.body = await file;
+})
 
 router.post('/detail', async(ctx, next) => {
   let link = ctx.request.body.link
-  const getDetail = (link) => new Promise((resolve, reject) =>
-    axios.get(`http://www.pokemon.jp/zukan/detail/${link}`)
+  const getDetail = (link) => new Promise((resolve, reject) => axios.get(`http://www.pokemon.jp/zukan/detail/${link}`)
     .then(res => {
       const $ = cheerio.load(res.data)
-      resolve({ 
+      resolve({
         num: $('.title .num').text(),
         name: $('.title .name').text(),
         profilePhoto: $('.profile-phto img').attr('src'),
         type: $('.type .pokemon-type li a span').map((i, el) => $(el).text()).get().join(','),
         weaknesses: $('.weaknesses .pokemon-type li a span').map((i, el) => $(el).text()).get().join(','),
-        details:[
+        details: [
           $('.pokemon-details').find('.details').eq(0).find('li').eq(0).find('p').eq(1).text(),
           $('.pokemon-details').find('.details').eq(0).find('li').eq(1).find('.txts').eq(0).find('p').text(),
           $('.pokemon-details').find('.details').eq(1).find('li').eq(0).find('p').eq(1).text(),
@@ -89,18 +91,18 @@ router.post('/detail', async(ctx, next) => {
         ],
         pokemonForm: $('.pokemon-form .list').children('li').map((i, el) => {
           return {
-            link:$(el).children('a').attr('href').replace('/zukan/detail/',''),
-            img:$(el).find('img').attr('src'),
-            num:$(el).find('.num').text(),
-            name:$(el).find('.name').text()
+            link: $(el).children('a').attr('href').replace('/zukan/detail/', ''),
+            img: $(el).find('img').attr('src'),
+            num: $(el).find('.num').text(),
+            name: $(el).find('.name').text()
           }
         }).get(),
-        evolution:$('.evolution .list').children('li').map((i, el) => {
-          return  {
-            link:$(el).children('a').attr('href').replace('/zukan/detail/',''),
-            img:$(el).find('img').attr('src'),
-            num:$(el).find('.num').text(),
-            name:$(el).find('.name').text()
+        evolution: $('.evolution .list').children('li').map((i, el) => {
+          return {
+            link: $(el).children('a').attr('href').replace('/zukan/detail/', ''),
+            img: $(el).find('img').attr('src'),
+            num: $(el).find('.num').text(),
+            name: $(el).find('.name').text()
           }
         }).get()
       })
@@ -118,23 +120,31 @@ router.post('/search/:p', async(ctx, next) => {
     return x.zukan_no.indexOf(search) >= 0 ||
       x.pokemon_name.indexOf(search) >= 0
   })
-  let lastPage = Math.floor(result_file.length/9)
+  let lastPage = Math.ceil(result_file.length / 12)
   let arr = []
-  for (var id = (0+p)*9; id < (1+p)*9; id++){
+  for (var id = (0 + p) * 12; id < (1 + p) * 12; id++) {
     await axios.post('http://www.pokemon.jp/api.php', qs.stringify(result_file[id]))
-    .then(json =>  {if(json.data.name!=null) arr.push(json.data)})
-    .catch(err => err)
+      .then(json => {
+        if (json.data.name != null) arr.push(json.data)
+      })
+      .catch(err => err)
   }
-  /*const getSearch = (id) => new Promise((resolve, reject) =>
-    axios.post('http://www.pokemon.jp/api.php', qs.stringify(result_file[id]))
-    .then(json => resolve(json.data))
-    .catch(err => reject(err))
-  )*/
+
   ctx.type = 'application/json';
   ctx.body = {
-    data:arr,
-    noPage:(p>=lastPage)?true:false
+    data: arr,
+    noPage: (p + 1 === lastPage) ? true : false
   }
+})
+
+router.post('/random', async(ctx, next) => {
+  let random = ctx.request.body.random
+  let arr
+  await axios.post('http://www.pokemon.jp/api.php', qs.stringify(random))
+    .then(json => arr=json.data)
+    .catch(err => err)
+  ctx.type = 'application/json';
+  ctx.body =  arr
 })
 
 router.post('/filter/:id',
@@ -164,12 +174,12 @@ router.post('/filter/:id',
     if (takasa) {
       ctx.result_3 = ctx.result_2.filter(x => {
         switch (takasa) {
-          case 'low':
-            return x.takasa >= low && x.takasa < normal
-          case 'normal':
-            return x.takasa < high && x.takasa >= normal
-          case 'high':
-            return x.takasa >= high
+        case 'low':
+          return x.takasa >= low && x.takasa < normal
+        case 'normal':
+          return x.takasa < high && x.takasa >= normal
+        case 'high':
+          return x.takasa >= high
         }
       })
     } else {
@@ -185,12 +195,12 @@ router.post('/filter/:id',
     if (omosa) {
       ctx.result_4 = ctx.result_3.filter(x => {
         switch (omosa) {
-          case 'light':
-            return x.omosa >= light && x.omosa < normal
-          case 'normal':
-            return x.omosa < heavy && x.omosa >= normal
-          case 'heavy':
-            return x.omosa >= heavy
+        case 'light':
+          return x.omosa >= light && x.omosa < normal
+        case 'normal':
+          return x.omosa < heavy && x.omosa >= normal
+        case 'heavy':
+          return x.omosa >= heavy
         }
       })
     } else {
@@ -205,27 +215,26 @@ router.post('/filter/:id',
       ctx.result_5 = ctx.result_4.filter(x => {
         let zukanNum = parseInt(x.zukan_no, 10)
         switch (regionSearch) {
-          case 'kanto':
-            return zukanNum >= 1 && zukanNum <= 151
-          case 'jhoto':
-            return zukanNum >= 152 && zukanNum <= 251
-          case 'hoenn':
-            return zukanNum >= 252 && zukanNum <= 386
-          case 'sinnoh':
-            return zukanNum >= 387 && zukanNum <= 493
-          case 'isshu':
-            return zukanNum >= 494 && zukanNum <= 649
-          case 'kalos':
-            return zukanNum >= 650 && zukanNum <= 721
-          case 'arolla':
-            return zukanNum >= 722 && zukanNum <= 801
+        case 'kanto':
+          return zukanNum >= 1 && zukanNum <= 151
+        case 'jhoto':
+          return zukanNum >= 152 && zukanNum <= 251
+        case 'hoenn':
+          return zukanNum >= 252 && zukanNum <= 386
+        case 'sinnoh':
+          return zukanNum >= 387 && zukanNum <= 493
+        case 'isshu':
+          return zukanNum >= 494 && zukanNum <= 649
+        case 'kalos':
+          return zukanNum >= 650 && zukanNum <= 721
+        case 'arolla':
+          return zukanNum >= 722 && zukanNum <= 801
         }
       })
     } else {
       ctx.result_5 = ctx.result_4
     }
-    const getFilter = (id) => new Promise((resolve, reject) =>
-      axios.post('http://www.pokemon.jp/api.php', qs.stringify(ctx.result_5[id]))
+    const getFilter = (id) => new Promise((resolve, reject) => axios.post('http://www.pokemon.jp/api.php', qs.stringify(ctx.result_5[id]))
       .then(json => resolve(json.data))
       .catch(err => reject(err))
     )
@@ -235,22 +244,19 @@ router.post('/filter/:id',
 
 router.get('/init/:p', async(ctx, next) => {
   let p = parseInt(ctx.params.p)
-  let lastPage = Math.floor(file.length/9)
-  /*const getApi = (id) => new Promise((resolve, reject) =>
-    axios.post('http://www.pokemon.jp/api.php', qs.stringify(file[id]))
-    .then(json => resolve(json.data))
-    .catch(err => reject(err))
-  )*/
+  let lastPage = Math.ceil(file.length / 12)
   let arr = []
-  for (var id = (0+p)*9; id < (1+p)*9; id++){
+  for (var id = (0 + p) * 12; id < (1 + p) * 12; id++) {
     await axios.post('http://www.pokemon.jp/api.php', qs.stringify(file[id]))
-    .then(json => {if(json.data.name!=null) arr.push(json.data)})
-    .catch(err => console.log(err))
+      .then(json => {
+        if (json.data.name != null) arr.push(json.data)
+      })
+      .catch(err => console.log(err))
   }
   ctx.type = 'application/json';
   ctx.body = {
-    data:arr,
-    noPage:(p===lastPage)?true:false
+    data: arr,
+    noPage: (p + 1 === lastPage) ? true : false
   }
 })
 

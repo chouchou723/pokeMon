@@ -5,7 +5,7 @@ import { Provider } from 'react-redux'
 import reducer from './reducer'
 import thunk from 'redux-thunk'
 import {initFetch} from './actions'
-import App from './components/App';
+import App from './App';
 import 'semantic-ui-css/semantic.min.css';
 import registerServiceWorker from './registerServiceWorker';
 
@@ -17,7 +17,7 @@ const composeEnhancers =
 
 let store = createStore(reducer,composeEnhancers(applyMiddleware(thunk)))
 
-store.dispatch(initFetch())
+store.dispatch(initFetch(store.getState().page,store.dispatch))
 ReactDOM.render(
 	<Provider store={store}>
 		<App />

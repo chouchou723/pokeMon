@@ -1,73 +1,117 @@
+import _ from 'lodash/collection'
 const baseUrl = 'http://localhost:3000'
 
+export const GET_DATA = 'GET_DATA'
+export const MORE_FETCH = 'MORE_FETCH'
+export const SEARCH_FETCH = 'SEARCH_FETCH'
+export const ADD_LOADING = 'ADD_LOADING'
+export const LOADING = 'LOADING'
+export const RANDOM_FETCH = 'RANDOM_FETCH'
 
-export const initFetch = () => 
-  dispatch => {
-    dispatch({type:'LOADING'})
-    fetch(`${baseUrl}/api/init/0`)
-      .then(res => res.json())
-      .then(json => dispatch({
-        type: 'GET_DATA',
-        json: json
-      }))
-  }
+const requestData = (p, type) => dispatch => fetch(`${baseUrl}/api/init/${p}`)
+  .then(res => res.json())
+  .then(json => dispatch({
+    type: type,
+    json: json
+  }))
 
+const postData = (p, val, type) => dispatch => fetch(`${baseUrl}/api/search/${p}`, {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    search: val,
+  })
+})
+  .then(res => res.json())
+  .then(json => dispatch({
+    type: type,
+    json: json,
+    val: val
+  }))
 
+const randomFetch = (val,startId,endId,type) => async dispatch => {
+  let items = []
 
-export const moreFetch = (p,val,howFetch) =>
-  dispatch => {
-    switch(howFetch) {
-      case 'init':
-        dispatch({type:'LOADING'})
-        fetch(`${baseUrl}/api/init/${p+1}`)
-          .then(res => res.json())
-          .then(json => dispatch({
-            type: 'MORE_FETCH',
-            json: json
-          }))
-        break
-      case 'search':
-        dispatch({type:'LOADING'})
-        fetch(`${baseUrl}/api/search/${p+1}`, {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json'
-              },
-              body: JSON.stringify({
-                  search: val,
-                })
-              })
-              .then(res => res.json())
-              .then(json =>  dispatch({
-                type: 'MORE_FETCH',
-                json: json
-              }))
-        break
-      default:
-        initFetch(2)
-    }
-  }
-
-export const searchFetch = (val) =>
-  dispatch => {
-    dispatch({type:'LOADING'})
-    fetch(`${baseUrl}/api/search/0`, {
+  for(let i=startId;i<endId;i++){
+    await fetch(`${baseUrl}/api/random`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-          search: val,
-        })
+        random: val[i],
       })
+    })
       .then(res => res.json())
-      .then(json =>  dispatch({
-        type: 'SEARCH_FETCH',
-        json: json,
-        val
-      }))
-    }
-   
+      .then(json => items.push(json))
+  }
+  console.log(startId,endId)
+  dispatch({
+        type: type,
+        json:{ data:items},
+        val: val,
+        nopage: (endId===val.length) ? true : false
+      })
+}
 
-    
- 
+
+export const initFetch = (dispatch) => dispatch => {
+  dispatch({
+    type: LOADING
+  })
+  dispatch(requestData(0, GET_DATA))
+}
+
+export const random = () => dispatch => {
+  dispatch({
+    type: LOADING
+  })
+
+  fetch(`${baseUrl}/api/top_zukan`)
+    .then(res => res.json())
+    .then(json => dispatch(
+      randomFetch(_.shuffle(json),0,12,RANDOM_FETCH)
+      ))
+}
+
+
+
+export const searchFetch = (val) => dispatch => {
+  dispatch({
+    type: LOADING
+  })
+  dispatch(postData(0, val, SEARCH_FETCH))
+}
+
+export const moreFetch = (p, val, howFetch) => dispatch => {
+  switch (howFetch) {
+  case 'init':
+    dispatch({
+      type: ADD_LOADING
+    })
+    dispatch(requestData(p, MORE_FETCH))
+    break
+  case 'search':
+    dispatch({
+      type: ADD_LOADING
+    })
+    dispatch(postData(p, val, MORE_FETCH))
+    break
+  case 'random':
+    dispatch({
+      type: ADD_LOADING
+    })
+    dispatch(randomFetch(val,p*12,(p+1)*12,MORE_FETCH))
+    break
+  default:
+    console.log('error');
+  }
+}
+
+
+
+
+
+
