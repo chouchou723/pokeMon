@@ -137,7 +137,6 @@ router.post('/search/:p', async(ctx, next) => {
   }
 })
 
-<<<<<<< HEAD
 router.post('/random', async(ctx, next) => {
   let random = ctx.request.body.random
   let arr
@@ -148,10 +147,8 @@ router.post('/random', async(ctx, next) => {
   ctx.body =  arr
 })
 
-router.post('/filter/:id',
-=======
+
 router.post('/filter/:p',
->>>>>>> 7f09ba55fa04cba6a52468441bc767b4a4f59b7d
   async(ctx, next) => {
     let type = ctx.request.body.type
     if (type) {
@@ -238,12 +235,7 @@ router.post('/filter/:p',
     } else {
       ctx.result_5 = ctx.result_4
     }
-<<<<<<< HEAD
-    const getFilter = (id) => new Promise((resolve, reject) => axios.post('http://www.pokemon.jp/api.php', qs.stringify(ctx.result_5[id]))
-      .then(json => resolve(json.data))
-      .catch(err => reject(err))
-    )
-=======
+
     let lastPage = Math.floor(ctx.result_5.length/9)
     let arr = []
     for (var id = (0+p)*9; id < (1+p)*9; id++){
@@ -251,7 +243,6 @@ router.post('/filter/:p',
       .then(json => {if(json.data.name!=null) arr.push(json.data)})
       .catch(err => err)
     }
->>>>>>> 7f09ba55fa04cba6a52468441bc767b4a4f59b7d
     ctx.type = 'application/json';
     ctx.body = {
       data:arr,
@@ -261,15 +252,10 @@ router.post('/filter/:p',
 
 router.get('/init/:p', async(ctx, next) => {
   let p = parseInt(ctx.params.p)
-<<<<<<< HEAD
   let lastPage = Math.ceil(file.length / 12)
-=======
-  let lastPage = Math.floor(file.length/9)
->>>>>>> 7f09ba55fa04cba6a52468441bc767b4a4f59b7d
   let arr = []
   for (var id = (0 + p) * 12; id < (1 + p) * 12; id++) {
     await axios.post('http://www.pokemon.jp/api.php', qs.stringify(file[id]))
-<<<<<<< HEAD
       .then(json => {
         if (json.data.name != null) arr.push(json.data)
       })
@@ -279,15 +265,6 @@ router.get('/init/:p', async(ctx, next) => {
   ctx.body = {
     data: arr,
     noPage: (p + 1 === lastPage) ? true : false
-=======
-    .then(json => {if(json.data.name!=null) arr.push(json.data)})
-    .catch(err => err)
-  }
-  ctx.type = 'application/json';
-  ctx.body = {
-    data:arr,
-    noPage:(p>=lastPage)?true:false
->>>>>>> 7f09ba55fa04cba6a52468441bc767b4a4f59b7d
   }
 })
 

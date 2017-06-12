@@ -11,14 +11,15 @@ const Cards = ({items, colorS,initFetch}) => {
     {
       items.map(item => (
         <Grid.Column mobile={16} tablet={8} computer={4} key={item.filename}>
-          <Card centered>
+          <Card centered link>
             <Grid>
               <Grid.Column only='computer tablet'>
                 <Image fluid src={`http://www.pokemon.jp/zukan/images/l/${item.filename}`} />
               </Grid.Column>
             </Grid>
             <Card.Content>
-              <Grid columns={2}>
+              <Grid padded columns={2}>
+              <Grid.Row>
                 <Grid.Column width={11}>
                   <Card.Header>
                     {item.pokemon_name}
@@ -32,6 +33,7 @@ const Cards = ({items, colorS,initFetch}) => {
                 <Grid.Column width={5} only='mobile'>
                   <Image floated='right' size='tiny' src={`http://www.pokemon.jp/zukan/images/s/${item.filename}`} />
                 </Grid.Column>
+                </Grid.Row>
               </Grid>
             </Card.Content>
           </Card>

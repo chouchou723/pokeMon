@@ -1,15 +1,29 @@
 import React, { Component } from 'react';
-import { Container, Grid, Dropdown } from 'semantic-ui-react'
+import { Container, Grid } from 'semantic-ui-react'
 import Cards from './components/Cards'
 import Headers from './components/Headers'
 import Inputs from './components/Inputs'
 import More from './components/More'
 import Loading from './components/Loading'
 import RandomButton from './components/RandomButton'
+import FilterButton from './components/FilterButton'
+import Filters from './components/Filters'
 import './assets/styles/App.css'
 
 
 class App extends Component {
+  constructor(props){
+    super(props)
+    this.handleToggle = this.handleToggle.bind(this);
+    this.state={
+        showFilters:false
+    }
+  }
+  handleToggle() {
+    this.setState({
+      showFilters:!this.state.showFilters
+    })
+  }
   colorS(type) {
     let typeArray = ['ノーマル', 'ほのお', 'みず', 'くさ', 'でんき', 'こおり', 'かくとう', 'どく', 'じめん', 'ひこう', 'エスパー', 'むし', 'いわ', 'ゴースト', 'ドラゴン', 'あく', 'はがね', 'フェアリー'];
     switch (type) {
@@ -58,21 +72,35 @@ class App extends Component {
       <div>
         <Headers />
         <Container>
-        <Grid padded>
+        <Grid>
+          <Grid.Row>
             <Grid.Column mobile={16} tablet={8} computer={8}>
               <Inputs />
             </Grid.Column>
             <Grid.Column mobile={16} tablet={8} computer={8}>
-              <Dropdown text='Filter' icon='filter' floating labeled button className='icon'>
-              </Dropdown>
+              <FilterButton handleToggle={this.handleToggle} />
             </Grid.Column>
-          <Grid.Row columns={1}>
+          </Grid.Row>
+          {this.state.showFilters?
+            <Grid.Row>
+            <Grid.Column>
+              <Filters />
+            </Grid.Column>
+          </Grid.Row>:null
+          }
+        </Grid>
+        <Grid>
+          <Grid.Row>
             <Grid.Column>
               <RandomButton />
             </Grid.Column>
           </Grid.Row>
-          <Cards colorS={this.colorS} />
-          </Grid>
+          <Grid.Row>
+            <Grid.Column>
+              <Cards colorS={this.colorS} />
+            </Grid.Column>
+          </Grid.Row>
+        </Grid>
 
           <Loading />
           <Grid>
