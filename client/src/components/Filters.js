@@ -1,28 +1,72 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { Grid, List, Button } from 'semantic-ui-react'
+import { Grid, List, Button, Label, Icon, Select } from 'semantic-ui-react'
+import {abilities, region} from './abilities'
 
 const Filters = () => {
-  let typeArray = ['ノーマル', 'ほのお', 'みず', 'くさ', 'でんき', 'こおり', 'かくとう', 'どく', 'じめん', 'ひこう', 'エスパー', 'むし', 'いわ', 'ゴースト', 'ドラゴン', 'あく', 'はがね', 'フェアリー'];
-  return(
+  let typeArray = ['ノーマル', 'ほのお', 'みず', 'くさ', 'でんき', 'こおり', 'かくとう', 'どく', 'じめん', 'ひこう', 'エスパー', 'むし', 'いわ', 'ゴースト', 'ドラゴン', 'あく', 'はがね', 'フェアリー']
+  return (
     <Grid celled>
       <Grid.Row columns={2}>
         <Grid.Column>
-          {typeArray.map(item => <Button compact size='mini'>{item}</Button>)}
+          {typeArray.map(item => <Button key={item} compact size='mini'>{item}</Button>)}
         </Grid.Column>
         <Grid.Column>
           <List divided verticalAlign='middle'>
               <List.Item>
-                <div>高さで探す</div>
+                <Grid padded>
+                  <Grid.Row>
+                    <Label as='a' tag>高さで探す</Label>
+                  </Grid.Row>
+                  <Grid.Row>
+                    <Button >低 い</Button>
+                    <Button >ふつう</Button>
+                    <Button >高 い</Button>
+                  </Grid.Row>
+                </Grid>
               </List.Item>
-              <List.Item>Pears</List.Item>
-              <List.Item>Oranges</List.Item>
+              <List.Item>
+              <Grid padded>
+                  <Grid.Row>
+                    <Label as='a' tag>重さで探す</Label>
+                  </Grid.Row>
+                  <Grid.Row>
+                    <Button >軽 い</Button>
+                    <Button >ふつう</Button>
+                    <Button >重 い</Button>
+                  </Grid.Row>
+                </Grid>
+              </List.Item>
+              <List.Item>
+                <Grid padded>
+                  <Grid.Row>
+                    <Label as='a' tag>特性で探す</Label>
+                 </Grid.Row>
+                 <Grid.Row>
+                    <Select placeholder='特性を選ぶ' options={abilities} />
+                 </Grid.Row>
+                </Grid>
+              </List.Item>
             </List>
         </Grid.Column>
       </Grid.Row>
-      <Grid.Row columns={1}>
+      <Grid.Row>
         <Grid.Column>
-          1
+          <Grid padded>
+            <Grid.Row>
+              <Label as='a' tag>地方で探す</Label>
+            </Grid.Row>
+
+            {
+              region.map(item => (
+                <Grid.Column mobile={16} tablet={8} computer={4} key={item}>
+                  <Button>{item}</Button>
+                </Grid.Column>
+              ))
+            }
+
+
+          </Grid>
         </Grid.Column>
       </Grid.Row>
     </Grid>

@@ -19,10 +19,10 @@ app
   .use(router.allowedMethods())
 
 axios.defaults.url = 'http://www.pokemon.jp/zukan/scripts/data/top_zukan.json'
-axios.defaults.proxy = {
+/*axios.defaults.proxy = {
   host: '10.220.2.48',
   port: 8080
-}
+}*/
 const fetch_top_zukan = axios.create({
   method: 'get',
 });

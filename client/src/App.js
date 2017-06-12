@@ -70,9 +70,13 @@ class App extends Component {
   render() {
     return (
       <div>
-        <Headers />
-        <Container>
         <Grid>
+          <Grid.Column>
+            <Headers />
+          </Grid.Column>
+        </Grid>
+        <Container>
+        <Grid className="filterGroup">
           <Grid.Row>
             <Grid.Column mobile={16} tablet={8} computer={8}>
               <Inputs />
@@ -80,14 +84,11 @@ class App extends Component {
             <Grid.Column mobile={16} tablet={8} computer={8}>
               <FilterButton handleToggle={this.handleToggle} />
             </Grid.Column>
-          </Grid.Row>
-          {this.state.showFilters?
-            <Grid.Row>
-            <Grid.Column>
-              <Filters />
+            <Grid.Column width={16}>
+            {this.state.showFilters?<Filters />:null}
             </Grid.Column>
-          </Grid.Row>:null
-          }
+          </Grid.Row>
+
         </Grid>
         <Grid>
           <Grid.Row>

@@ -7,8 +7,8 @@ export const ADD_LOADING = 'ADD_LOADING'
 export const LOADING = 'LOADING'
 export const RANDOM_FETCH = 'RANDOM_FETCH'
 
-// const baseUrl = 'http://localhost:3000'
-const baseUrl = 'http://10.220.196.18:3000'
+const baseUrl = 'http://localhost:3000'
+// const baseUrl = 'http://10.220.196.18:3000'
 
 const requestData = (p, type) => dispatch => fetch(`${baseUrl}/api/init/${p}`)
   .then(res => res.json())
