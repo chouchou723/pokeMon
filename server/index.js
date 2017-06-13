@@ -19,10 +19,10 @@ app
   .use(router.allowedMethods())
 
 axios.defaults.url = 'http://www.pokemon.jp/zukan/scripts/data/top_zukan.json'
-/*axios.defaults.proxy = {
+axios.defaults.proxy = {
   host: '10.220.2.48',
   port: 8080
-}*/
+}
 const fetch_top_zukan = axios.create({
   method: 'get',
 });
@@ -152,8 +152,8 @@ router.post('/filter/:p',
   async(ctx, next) => {
     let type = ctx.request.body.type
     if (type) {
-      ctx.result_1 = file.filter(x => x.type.indexOf(type) >= 0)
-    } else {
+      ctx.result_1 = file.filter(x => x.type.indexOf(type.type1) >= 0 && x.type.indexOf(type.type2) >= 0)
+    }else {
       ctx.result_1 = file
     }
     await next()
@@ -169,6 +169,8 @@ router.post('/filter/:p',
   },
   async(ctx, next) => {
     let takasa = ctx.request.body.takasa
+    let tt = takasa.split(",")
+    console.log(tt[0]);
     let low = 0,
       normal = 1.1,
       high = 2.1

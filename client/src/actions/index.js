@@ -6,9 +6,10 @@ export const SEARCH_FETCH = 'SEARCH_FETCH'
 export const ADD_LOADING = 'ADD_LOADING'
 export const LOADING = 'LOADING'
 export const RANDOM_FETCH = 'RANDOM_FETCH'
+export const FILTER_FETCH = 'FILTER_FETCH'
 
-const baseUrl = 'http://localhost:3000'
-// const baseUrl = 'http://10.220.196.18:3000'
+// const baseUrl = 'http://localhost:3000'
+const baseUrl = 'http://10.220.196.18:3000'
 
 const requestData = (p, type) => dispatch => fetch(`${baseUrl}/api/init/${p}`)
   .then(res => res.json())
@@ -33,9 +34,22 @@ const postData = (p, val, type) => dispatch => fetch(`${baseUrl}/api/search/${p}
     val: val
   }))
 
+const postFilterData = (p, type) => dispatch => fetch(`${baseUrl}/api/filter/${p}`, {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    takasa: 'low,normal',
+  })
+})
+  .then(res => res.json())
+  .then(json => dispatch({
+    type: type,
+  }))
+
 const randomFetch = (val,startId,endId,type) => async dispatch => {
   let items = []
-
   for(let i=startId;i<endId;i++){
     await fetch(`${baseUrl}/api/random`, {
       method: 'POST',
@@ -49,7 +63,6 @@ const randomFetch = (val,startId,endId,type) => async dispatch => {
       .then(res => res.json())
       .then(json => items.push(json))
   }
-  console.log(startId,endId)
   dispatch({
         type: type,
         json:{ data:items},
@@ -78,13 +91,18 @@ export const random = () => dispatch => {
       ))
 }
 
-
-
 export const searchFetch = (val) => dispatch => {
   dispatch({
     type: LOADING
   })
   dispatch(postData(0, val, SEARCH_FETCH))
+}
+
+export const filterFetch = () => dispatch => {
+  // dispatch({
+  //   type: LOADING
+  // })
+  dispatch(postFilterData(0,FILTER_FETCH))
 }
 
 export const moreFetch = (p, val, howFetch) => dispatch => {
