@@ -2,15 +2,15 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { Loader } from 'semantic-ui-react'
 
-const Loading = ({isdisplay}) => (
+const Loading = ({loadingDisplay}) => (
   <div>
-		{isdisplay ? <Loader active inline='centered' size='large' /> : <Loader disabled inline='centered' size='large' />}
+		{loadingDisplay ? <Loader active inline='centered' size='large' /> : <Loader disabled inline='centered' size='large' />}
 	</div>
 )
 
 const mapStateToProps = (state) => {
   return {
-    isdisplay: state.isdisplay
+    loadingDisplay: state.loadingDisplay
   }
 }
 

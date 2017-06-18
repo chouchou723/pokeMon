@@ -1,4 +1,4 @@
-export const abilities = [
+export const feature = [
 {key:'ＡＲシステム',text:'ＡＲシステム',value:'ＡＲシステム'},
 {key:'アイスボディ',text:'アイスボディ',value:'アイスボディ'},
 {key:'あくしゅう',text:'あくしゅう',value:'あくしゅう'},
@@ -209,13 +209,9 @@ export const abilities = [
 {key:'レシーバー',text:'レシーバー',value:'レシーバー'},
 ]
 
-export const region = [
-'カントー地方',
-'ジョウト地方',
-'ホウエン地方',
-'シンオウ地方',
-'イッシュ地方',
-'カロス地方',
-'アローラ地方']
+export const region = ['カントー地方', 'ジョウト地方', 'ホウエン地方', 'シンオウ地方', 'イッシュ地方', 'カロス地方', 'アローラ地方']
 
 export const type = ['ノーマル', 'ほのお', 'みず', 'くさ', 'でんき', 'こおり', 'かくとう', 'どく', 'じめん', 'ひこう', 'エスパー', 'むし', 'いわ', 'ゴースト', 'ドラゴン', 'あく', 'はがね', 'フェアリー']
+
+export const height = ['low','normal','high']
+export const weight = ['light','normal','heavy']

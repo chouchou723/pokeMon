@@ -19,9 +19,13 @@ app
   .use(router.allowedMethods())
 
 axios.defaults.url = 'http://www.pokemon.jp/zukan/scripts/data/top_zukan.json'
+// axios.defaults.proxy = {
+//   host: '10.220.2.48',
+//   port: 8080
+// }
 axios.defaults.proxy = {
-  host: '10.220.2.48',
-  port: 8080
+  host: '127.0.0.1',
+  port: 1080
 }
 const fetch_top_zukan = axios.create({
   method: 'get',
@@ -150,16 +154,20 @@ router.post('/random', async(ctx, next) => {
 
 router.post('/filter/:p',
   async(ctx, next) => {
-    let type = ctx.request.body.type
-    if (type) {
-      ctx.result_1 = file.filter(x => x.type.indexOf(type.type1) >= 0 && x.type.indexOf(type.type2) >= 0)
-    }else {
+    let type = (ctx.request.body.tag.type.length>0) ? ctx.request.body.tag.type.map(x=>x.tag) : ctx.request.body.tag.type
+    if (type.length === 1) {
+      ctx.result_1 = file.filter(x => x.type.indexOf(type[0]) >= 0)
+    }
+    else if(type.length === 2){
+      ctx.result_1 = file.filter(x => x.type.indexOf(type[0]) >= 0 && x.type.indexOf(type[1]) >= 0)
+    }
+    else {
       ctx.result_1 = file
     }
     await next()
   },
   async(ctx, next) => {
-    let tokusei = ctx.request.body.tokusei
+    let tokusei = ctx.request.body.tag.feature
     if (tokusei) {
       ctx.result_2 = ctx.result_1.filter(x => x.tokusei === tokusei)
     } else {
@@ -168,34 +176,41 @@ router.post('/filter/:p',
     await next()
   },
   async(ctx, next) => {
-    let takasa = ctx.request.body.takasa
-    let tt = takasa.split(",")
-    console.log(tt[0]);
+    let takasa = ctx.request.body.tag.height
     let low = 0,
       normal = 1.1,
       high = 2.1
-    if (takasa) {
-      ctx.result_3 = ctx.result_2.filter(x => {
-        switch (takasa) {
-        case 'low':
-          return x.takasa >= low && x.takasa < normal
-        case 'normal':
-          return x.takasa < high && x.takasa >= normal
-        case 'high':
-          return x.takasa >= high
-        }
+
+    if (takasa.length>0) {
+      let array = []
+      for(let i=0;i<takasa.length;i++){
+        ctx.result_2.forEach((elm) => {
+          if(takasa[i]==='low' && elm.takasa >= low && elm.takasa < normal){
+            array.push(elm)
+          }else if (takasa[i]==='normal' && elm.takasa < high && elm.takasa >= normal) {
+            array.push(elm)
+          }else if (takasa[i]==='high' && elm.takasa >= high) {
+            array.push(elm)
+          }
+        })
+      }
+      array.sort(function(a, b) {
+        a = parseInt(a.zukan_no, 10);
+        b = parseInt(b.zukan_no, 10);
+        return a - b;
       })
+      ctx.result_3 = array
     } else {
       ctx.result_3 = ctx.result_2
     }
     await next()
   },
   async(ctx, next) => {
-    let omosa = ctx.request.body.omosa
+    let omosa = ctx.request.body.tag.weight
     let light = 0,
       normal = 35.1,
       heavy = 100
-    if (omosa) {
+    if (omosa.length>0) {
       ctx.result_4 = ctx.result_3.filter(x => {
         switch (omosa) {
         case 'light':
@@ -213,11 +228,11 @@ router.post('/filter/:p',
   },
   async(ctx, next) => {
     let p = parseInt(ctx.params.p)
-    let regionSearch = ctx.request.body.regionSearch
-    if (regionSearch) {
+    let region = ctx.request.body.tag.region
+    if (region.length>0) {
       ctx.result_5 = ctx.result_4.filter(x => {
         let zukanNum = parseInt(x.zukan_no, 10)
-        switch (regionSearch) {
+        switch (region) {
         case 'kanto':
           return zukanNum >= 1 && zukanNum <= 151
         case 'jhoto':
@@ -238,9 +253,9 @@ router.post('/filter/:p',
       ctx.result_5 = ctx.result_4
     }
 
-    let lastPage = Math.floor(ctx.result_5.length/9)
+    let lastPage = Math.ceil(ctx.result_5.length/12)
     let arr = []
-    for (var id = (0+p)*9; id < (1+p)*9; id++){
+    for (var id = (0+p)*12; id < (1+p)*12; id++){
       await axios.post('http://www.pokemon.jp/api.php', qs.stringify(ctx.result_5[id]))
       .then(json => {if(json.data.name!=null) arr.push(json.data)})
       .catch(err => err)
@@ -248,7 +263,7 @@ router.post('/filter/:p',
     ctx.type = 'application/json';
     ctx.body = {
       data:arr,
-      noPage:(p>=lastPage)?true:false
+      noPage:(p + 1 === lastPage) ? true : false
     }
   })
 

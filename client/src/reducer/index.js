@@ -1,14 +1,23 @@
+import { combineReducers } from 'redux'
+import { type, height, weight,region } from '../components/FilterData'
+
 let initState = {
   data:[],
-  gap:9,
   page:0,
   howFetch:'init',
-  isdisplay:true,
   noPage: false,
   val:[]
 }
 
-const reducer = (state = initState, action) => {
+let filterInit = {
+  type:type.map(item => ({tag:item,isActive:false})),
+  height:height.map(item => ({tag:item,isActive:false})),
+  weight:weight.map(item => ({tag:item,isActive:false})),
+  feature:false,
+  region:region.map(item => ({tag:item,isActive:false}))
+}
+
+const fetch = (state = initState, action) => {
   switch (action.type) {
     case  'GET_DATA':
       return {
@@ -17,7 +26,6 @@ const reducer = (state = initState, action) => {
         noPage:action.json.noPage,
         howFetch:'init',
         page: 0,
-        isdisplay:false
       }
     case 'MORE_FETCH':
       return {
@@ -25,7 +33,6 @@ const reducer = (state = initState, action) => {
         data: state.data.concat(action.json.data),
         noPage:action.json.noPage,
         page:state.page+1,
-        isdisplay:false
       }
     case 'SEARCH_FETCH':
       return {
@@ -34,7 +41,6 @@ const reducer = (state = initState, action) => {
         noPage:action.json.noPage,
         howFetch:'search',
         page: 0,
-        isdisplay:false,
         val:action.val
        }
     case 'RANDOM_FETCH':
@@ -44,23 +50,70 @@ const reducer = (state = initState, action) => {
         noPage: action.nopage,
         howFetch:'random',
         page: 0,
-        isdisplay:false,
         val: action.val
        }
-    case 'LOADING':
+    case 'FILTER_FETCH':
       return {
         ...state,
-        data:[],
-        isdisplay:true
+        data:action.json.data,
+        noPage:action.json.noPage,
+        howFetch:'filter',
+        page: 0,
+        val:action.val
       }
-    case 'ADD_LOADING':
+    case 'EMPTY_DATA':
       return {
         ...state,
-        isdisplay:true
+        data:[]
       }
     default:
       return state
   }
 }
+const loadingDisplay = (state = false, action) => {
+  switch (action.type) {
+    case  'LOADING':
+      return !state
+    default:
+      return state
+  }
+}
+const filter = (state = filterInit, action) => {
+  switch (action.type) {
+    case 'FILTER_CLICK_TYPE':
+      return {
+        ...state,
+        ...state.type[action.index].isActive = !state.type[action.index].isActive
+      }
+    case 'FILTER_CLICK_HEIGHT':
+      return {
+        ...state,
+        ...state.height[action.index].isActive = !state.height[action.index].isActive
+      }
+    case 'FILTER_CLICK_WEIGHT':
+      return {
+        ...state,
+        ...state.weight[action.index].isActive = !state.weight[action.index].isActive
+      }
+    case 'FILTER_CLICK_FEATURE':
+      return {
+        ...state,
+        feature:action.feature
+      }
+    case 'FILTER_CLICK_REGION':
+      return {
+        ...state,
+        ...state.region[action.index].isActive = !state.region[action.index].isActive
+      }
+    default:
+      return state
+  }
+}
+
+const reducer = combineReducers({
+  fetch,
+  loadingDisplay,
+  filter
+})
 
 export default reducer

@@ -32,7 +32,7 @@ const Cards = ({items, colorS,initFetch}) => (
 
 const mapStateToProps = (state) => {
   return {
-    items: state.data
+    items: state.fetch.data
   }
 }
 

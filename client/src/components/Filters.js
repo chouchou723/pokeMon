@@ -1,22 +1,17 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import { Grid, List, Button, Label, Select } from 'semantic-ui-react'
-import {abilities, region, type} from './FilterData.js'
-import {filterFetch} from '../actions'
+import {feature, region, type, height, weight} from './FilterData'
+import {filterFetch, filterClick} from '../actions'
 
-const Filters = ({dispatch}) => {
-  let filter = {
-    type:['くさ','どく']
-  }
+const Filters = ({dispatch, tag,isActive}) => {
   return (
     <Grid celled>
       <Grid.Row columns={2}>
         <Grid.Column width={9}>
           <Grid padded>
-          {type.map(item => 
-            <Grid.Column mobile={8} tablet={8} computer={4} key={item}>
-              <Button size="mini" compact >{item}</Button>
-            </Grid.Column>
+          {type.map((item, i) =>
+              <Button key={item} size="mini" compact onClick={()=>dispatch(filterClick(i,'FILTER_CLICK_TYPE'))} className={isActive(i,'type')?'active':null}>{item}</Button>
             )}
           </Grid>
         </Grid.Column>
@@ -27,15 +22,11 @@ const Filters = ({dispatch}) => {
                   <Grid.Row>
                     <Label as='a' tag>高さで探す</Label>
                   </Grid.Row>
-                  <Grid.Column mobile={16} tablet={16} computer={4}>
-                    <Button>低 い</Button>
-                  </Grid.Column>
-                  <Grid.Column mobile={16} tablet={16} computer={4}>
-                    <Button>ふつう</Button>
-                  </Grid.Column>
-                  <Grid.Column mobile={16} tablet={16} computer={4}>
-                    <Button>高 い</Button>
-                  </Grid.Column>
+                  {
+                    height.map((item, i) => (
+                      <Button key={item} onClick={()=>dispatch(filterClick(i,'FILTER_CLICK_HEIGHT'))} className={isActive(i,'height')?'active':null}>{item}</Button>
+                    ))
+                  }
                 </Grid>
               </List.Item>
               <List.Item>
@@ -43,15 +34,11 @@ const Filters = ({dispatch}) => {
                   <Grid.Row>
                     <Label as='a' tag>重さで探す</Label>
                   </Grid.Row>
-                    <Grid.Column mobile={16} tablet={16} computer={4}>
-                      <Button >軽 い</Button>
-                    </Grid.Column>
-                    <Grid.Column mobile={16} tablet={16} computer={4}>
-                      <Button >ふつう</Button>
-                    </Grid.Column>
-                    <Grid.Column mobile={16} tablet={16} computer={4}>
-                      <Button >重 い</Button>
-                     </Grid.Column>
+                   {
+                    weight.map((item, i) => (
+                      <Button key={item} onClick={()=>dispatch(filterClick(i,'FILTER_CLICK_WEIGHT'))} className={isActive(i,'weight')?'active':null}>{item}</Button>
+                    ))
+                  }
                 </Grid>
               </List.Item>
               <List.Item>
@@ -60,7 +47,8 @@ const Filters = ({dispatch}) => {
                     <Label as='a' tag>特性で探す</Label>
                  </Grid.Row>
                  <Grid.Row>
-                    <Select fluid placeholder='特性を選ぶ' options={abilities} />
+                  <Select fluid placeholder='特性を選ぶ' options={feature}
+                  onChange={(e, { value }) => dispatch(filterClick({ value }.value,'FILTER_CLICK_FEATURE'))} />
                  </Grid.Row>
                 </Grid>
               </List.Item>
@@ -74,10 +62,8 @@ const Filters = ({dispatch}) => {
               <Label as='a' tag>地方で探す</Label>
             </Grid.Row>
             {
-              region.map(item => (
-                <Grid.Column mobile={8} tablet={8} computer={4} key={item}>
-                  <Button>{item}</Button>
-                </Grid.Column>
+              region.map((item, i) => (
+                  <Button key={item} onClick={()=>dispatch(filterClick(i,'FILTER_CLICK_REGION'))}>{item}</Button>
               ))
             }
           </Grid>
@@ -85,7 +71,7 @@ const Filters = ({dispatch}) => {
       </Grid.Row>
       <Grid.Row>
         <Grid.Column >
-          <Button icon="search" content="search" onClick={() => dispatch(filterFetch())} />
+          <Button icon="search" content="search" onClick={() => dispatch(filterFetch(tag))} />
         </Grid.Column>
       </Grid.Row>
     </Grid>
@@ -94,8 +80,9 @@ const Filters = ({dispatch}) => {
 
 const mapStateToProps = (state) => {
   return {
-    items: state.data
+    tag:state.filter,
+    isActive:(i,tag) => state.filter[tag][i].isActive
   }
 }
 
-export default connect()(Filters)
+export default connect(mapStateToProps)(Filters)
