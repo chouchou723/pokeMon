@@ -13,13 +13,21 @@ let filterInit = {
   type:type.map(item => ({tag:item,isActive:false})),
   height:height.map(item => ({tag:item,isActive:false})),
   weight:weight.map(item => ({tag:item,isActive:false})),
-  feature:false,
-  region:region.map(item => ({tag:item,isActive:false}))
+  feature:null,
+  region:region.map(item => ({tag:item.value,isActive:false}))
 }
 
 const fetch = (state = initState, action) => {
   switch (action.type) {
     case  'GET_DATA':
+      return {
+        ...state,
+        data:action.json.data,
+        noPage:action.json.noPage,
+        howFetch:'init',
+        page: 0,
+      }
+    case  'RESET_FETCH':
       return {
         ...state,
         data:action.json.data,
@@ -104,6 +112,15 @@ const filter = (state = filterInit, action) => {
       return {
         ...state,
         ...state.region[action.index].isActive = !state.region[action.index].isActive
+      }
+    case 'FILTER_CLICK_RESET':
+      return {
+        ...state,
+        type:type.map(item => ({tag:item,isActive:false})),
+        height:height.map(item => ({tag:item,isActive:false})),
+        weight:weight.map(item => ({tag:item,isActive:false})),
+        feature:null,
+        region:region.map(item => ({tag:item.value,isActive:false}))
       }
     default:
       return state

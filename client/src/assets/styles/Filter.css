@@ -1,0 +1,396 @@
+.ui.padded.grid button.ty1 {
+  background: none;
+  border-radius: 0;
+}
+.ui.padded.grid button.ty1 {
+  border-radius: 4px;
+  border: 1px solid #b1b1b1;
+  color: #b1b1b1;
+}
+.ui.padded.grid button.ty1.active {
+  background: #b1b1b1;
+  color: #fff;
+}
+.ui.padded.grid button.ty1:hover {
+  background: #b1b1b1;
+  color: #fff;
+}
+.ui.padded.grid button.ty1.disable:hover {
+  background: none;
+  color: #ccc;
+  cursor: default;
+}
+.ui.padded.grid button.ty2 {
+  background: none;
+  border-radius: 0;
+}
+.ui.padded.grid button.ty2 {
+  border-radius: 4px;
+  border: 1px solid #e4653f;
+  color: #e4653f;
+}
+.ui.padded.grid button.ty2.active {
+  background: #e4653f;
+  color: #fff;
+}
+.ui.padded.grid button.ty2:hover {
+  background: #e4653f;
+  color: #fff;
+}
+.ui.padded.grid button.ty2.disable:hover {
+  background: none;
+  color: #ccc;
+  cursor: default;
+}
+.ui.padded.grid button.ty3 {
+  background: none;
+  border-radius: 0;
+}
+.ui.padded.grid button.ty3 {
+  border-radius: 4px;
+  border: 1px solid #50abda;
+  color: #50abda;
+}
+.ui.padded.grid button.ty3.active {
+  background: #50abda;
+  color: #fff;
+}
+.ui.padded.grid button.ty3:hover {
+  background: #50abda;
+  color: #fff;
+}
+.ui.padded.grid button.ty3.disable:hover {
+  background: none;
+  color: #ccc;
+  cursor: default;
+}
+.ui.padded.grid button.ty4 {
+  background: none;
+  border-radius: 0;
+}
+.ui.padded.grid button.ty4 {
+  border-radius: 4px;
+  border: 1px solid #9ac30e;
+  color: #9ac30e;
+}
+.ui.padded.grid button.ty4.active {
+  background: #9ac30e;
+  color: #fff;
+}
+.ui.padded.grid button.ty4:hover {
+  background: #9ac30e;
+  color: #fff;
+}
+.ui.padded.grid button.ty4.disable:hover {
+  background: none;
+  color: #ccc;
+  cursor: default;
+}
+.ui.padded.grid button.ty5 {
+  background: none;
+  border-radius: 0;
+}
+.ui.padded.grid button.ty5 {
+  border-radius: 4px;
+  border: 1px solid #e8c71a;
+  color: #e8c71a;
+}
+.ui.padded.grid button.ty5.active {
+  background: #e8c71a;
+  color: #fff;
+}
+.ui.padded.grid button.ty5:hover {
+  background: #e8c71a;
+  color: #fff;
+}
+.ui.padded.grid button.ty5.disable:hover {
+  background: none;
+  color: #ccc;
+  cursor: default;
+}
+.ui.padded.grid button.ty6 {
+  background: none;
+  border-radius: 0;
+}
+.ui.padded.grid button.ty6 {
+  border-radius: 4px;
+  border: 1px solid #53c4e5;
+  color: #53c4e5;
+}
+.ui.padded.grid button.ty6.active {
+  background: #53c4e5;
+  color: #fff;
+}
+.ui.padded.grid button.ty6:hover {
+  background: #53c4e5;
+  color: #fff;
+}
+.ui.padded.grid button.ty6.disable:hover {
+  background: none;
+  color: #ccc;
+  cursor: default;
+}
+.ui.padded.grid button.ty7 {
+  background: none;
+  border-radius: 0;
+}
+.ui.padded.grid button.ty7 {
+  border-radius: 4px;
+  border: 1px solid #e99a3f;
+  color: #e99a3f;
+}
+.ui.padded.grid button.ty7.active {
+  background: #e99a3f;
+  color: #fff;
+}
+.ui.padded.grid button.ty7:hover {
+  background: #e99a3f;
+  color: #fff;
+}
+.ui.padded.grid button.ty7.disable:hover {
+  background: none;
+  color: #ccc;
+  cursor: default;
+}
+.ui.padded.grid button.ty8 {
+  background: none;
+  border-radius: 0;
+}
+.ui.padded.grid button.ty8 {
+  border-radius: 4px;
+  border: 1px solid #ba79c1;
+  color: #ba79c1;
+}
+.ui.padded.grid button.ty8.active {
+  background: #ba79c1;
+  color: #fff;
+}
+.ui.padded.grid button.ty8:hover {
+  background: #ba79c1;
+  color: #fff;
+}
+.ui.padded.grid button.ty8.disable:hover {
+  background: none;
+  color: #ccc;
+  cursor: default;
+}
+.ui.padded.grid button.ty9 {
+  background: none;
+  border-radius: 0;
+}
+.ui.padded.grid button.ty9 {
+  border-radius: 4px;
+  border: 1px solid #c8a841;
+  color: #c8a841;
+}
+.ui.padded.grid button.ty9.active {
+  background: #c8a841;
+  color: #fff;
+}
+.ui.padded.grid button.ty9:hover {
+  background: #c8a841;
+  color: #fff;
+}
+.ui.padded.grid button.ty9.disable:hover {
+  background: none;
+  color: #ccc;
+  cursor: default;
+}
+.ui.padded.grid button.ty10 {
+  background: none;
+  border-radius: 0;
+}
+.ui.padded.grid button.ty10 {
+  border-radius: 4px;
+  border: 1px solid #5e9fe2;
+  color: #5e9fe2;
+}
+.ui.padded.grid button.ty10.active {
+  background: #5e9fe2;
+  color: #fff;
+}
+.ui.padded.grid button.ty10:hover {
+  background: #5e9fe2;
+  color: #fff;
+}
+.ui.padded.grid button.ty10.disable:hover {
+  background: none;
+  color: #ccc;
+  cursor: default;
+}
+.ui.padded.grid button.ty11 {
+  background: none;
+  border-radius: 0;
+}
+.ui.padded.grid button.ty11 {
+  border-radius: 4px;
+  border: 1px solid #e885b2;
+  color: #e885b2;
+}
+.ui.padded.grid button.ty11.active {
+  background: #e885b2;
+  color: #fff;
+}
+.ui.padded.grid button.ty11:hover {
+  background: #e885b2;
+  color: #fff;
+}
+.ui.padded.grid button.ty11.disable:hover {
+  background: none;
+  color: #ccc;
+  cursor: default;
+}
+.ui.padded.grid button.ty12 {
+  background: none;
+  border-radius: 0;
+}
+.ui.padded.grid button.ty12 {
+  border-radius: 4px;
+  border: 1px solid #6cbe50;
+  color: #6cbe50;
+}
+.ui.padded.grid button.ty12.active {
+  background: #6cbe50;
+  color: #fff;
+}
+.ui.padded.grid button.ty12:hover {
+  background: #6cbe50;
+  color: #fff;
+}
+.ui.padded.grid button.ty12.disable:hover {
+  background: none;
+  color: #ccc;
+  cursor: default;
+}
+.ui.padded.grid button.ty13 {
+  background: none;
+  border-radius: 0;
+}
+.ui.padded.grid button.ty13 {
+  border-radius: 4px;
+  border: 1px solid #b08754;
+  color: #b08754;
+}
+.ui.padded.grid button.ty13.active {
+  background: #b08754;
+  color: #fff;
+}
+.ui.padded.grid button.ty13:hover {
+  background: #b08754;
+  color: #fff;
+}
+.ui.padded.grid button.ty13.disable:hover {
+  background: none;
+  color: #ccc;
+  cursor: default;
+}
+.ui.padded.grid button.ty14 {
+  background: none;
+  border-radius: 0;
+}
+.ui.padded.grid button.ty14 {
+  border-radius: 4px;
+  border: 1px solid #756eb4;
+  color: #756eb4;
+}
+.ui.padded.grid button.ty14.active {
+  background: #756eb4;
+  color: #fff;
+}
+.ui.padded.grid button.ty14:hover {
+  background: #756eb4;
+  color: #fff;
+}
+.ui.padded.grid button.ty14.disable:hover {
+  background: none;
+  color: #ccc;
+  cursor: default;
+}
+.ui.padded.grid button.ty15 {
+  background: none;
+  border-radius: 0;
+}
+.ui.padded.grid button.ty15 {
+  border-radius: 4px;
+  border: 1px solid #6c81c8;
+  color: #6c81c8;
+}
+.ui.padded.grid button.ty15.active {
+  background: #6c81c8;
+  color: #fff;
+}
+.ui.padded.grid button.ty15:hover {
+  background: #6c81c8;
+  color: #fff;
+}
+.ui.padded.grid button.ty15.disable:hover {
+  background: none;
+  color: #ccc;
+  cursor: default;
+}
+.ui.padded.grid button.ty16 {
+  background: none;
+  border-radius: 0;
+}
+.ui.padded.grid button.ty16 {
+  border-radius: 4px;
+  border: 1px solid #5a3c1e;
+  color: #5a3c1e;
+}
+.ui.padded.grid button.ty16.active {
+  background: #5a3c1e;
+  color: #fff;
+}
+.ui.padded.grid button.ty16:hover {
+  background: #5a3c1e;
+  color: #fff;
+}
+.ui.padded.grid button.ty16.disable:hover {
+  background: none;
+  color: #ccc;
+  cursor: default;
+}
+.ui.padded.grid button.ty17 {
+  background: none;
+  border-radius: 0;
+}
+.ui.padded.grid button.ty17 {
+  border-radius: 4px;
+  border: 1px solid #919191;
+  color: #919191;
+}
+.ui.padded.grid button.ty17.active {
+  background: #919191;
+  color: #fff;
+}
+.ui.padded.grid button.ty17:hover {
+  background: #919191;
+  color: #fff;
+}
+.ui.padded.grid button.ty17.disable:hover {
+  background: none;
+  color: #ccc;
+  cursor: default;
+}
+.ui.padded.grid button.ty18 {
+  background: none;
+  border-radius: 0;
+}
+.ui.padded.grid button.ty18 {
+  border-radius: 4px;
+  border: 1px solid #e06cbb;
+  color: #e06cbb;
+}
+.ui.padded.grid button.ty18.active {
+  background: #e06cbb;
+  color: #fff;
+}
+.ui.padded.grid button.ty18:hover {
+  background: #e06cbb;
+  color: #fff;
+}
+.ui.padded.grid button.ty18.disable:hover {
+  background: none;
+  color: #ccc;
+  cursor: default;
+}

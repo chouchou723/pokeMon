@@ -2,16 +2,24 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { Grid, List, Button, Label, Select } from 'semantic-ui-react'
 import {feature, region, type, height, weight} from './FilterData'
-import {filterFetch, filterClick} from '../actions'
+import {filterFetch, filterClick, resetFetch} from '../actions'
+import '../assets/styles/Filter.css'
 
-const Filters = ({dispatch, tag,isActive}) => {
+const Filters = ({dispatch, colorS, tag, isActive}) => {
   return (
     <Grid celled>
       <Grid.Row columns={2}>
         <Grid.Column width={9}>
           <Grid padded>
           {type.map((item, i) =>
-              <Button key={item} size="mini" compact onClick={()=>dispatch(filterClick(i,'FILTER_CLICK_TYPE'))} className={isActive(i,'type')?'active':null}>{item}</Button>
+              <Button 
+              key={item} 
+              size="mini" 
+              compact 
+              onClick={()=>dispatch(filterClick(i,'FILTER_CLICK_TYPE'))} 
+              className={isActive(i,'type') ? 'active '+colorS(item) : colorS(item)}>
+                {item}
+              </Button>
             )}
           </Grid>
         </Grid.Column>
@@ -63,7 +71,10 @@ const Filters = ({dispatch, tag,isActive}) => {
             </Grid.Row>
             {
               region.map((item, i) => (
-                  <Button key={item} onClick={()=>dispatch(filterClick(i,'FILTER_CLICK_REGION'))}>{item}</Button>
+                  <Button 
+                  key={item.value} 
+                  onClick={()=>dispatch(filterClick(i,'FILTER_CLICK_REGION'))} 
+                  className={isActive(i,'region')?'active':null}>{item.text}</Button>
               ))
             }
           </Grid>
@@ -71,6 +82,7 @@ const Filters = ({dispatch, tag,isActive}) => {
       </Grid.Row>
       <Grid.Row>
         <Grid.Column >
+          <Button icon="refresh" content="reset" onClick={() => dispatch(resetFetch(tag))} />
           <Button icon="search" content="search" onClick={() => dispatch(filterFetch(tag))} />
         </Grid.Column>
       </Grid.Row>

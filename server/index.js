@@ -19,14 +19,14 @@ app
   .use(router.allowedMethods())
 
 axios.defaults.url = 'http://www.pokemon.jp/zukan/scripts/data/top_zukan.json'
-// axios.defaults.proxy = {
-//   host: '10.220.2.48',
-//   port: 8080
-// }
 axios.defaults.proxy = {
-  host: '127.0.0.1',
-  port: 1080
+  host: '10.220.2.48',
+  port: 8080
 }
+// axios.defaults.proxy = {
+//   host: '127.0.0.1',
+//   port: 1080
+// }
 const fetch_top_zukan = axios.create({
   method: 'get',
 });
@@ -168,15 +168,15 @@ router.post('/filter/:p',
   },
   async(ctx, next) => {
     let tokusei = ctx.request.body.tag.feature
-    if (tokusei) {
-      ctx.result_2 = ctx.result_1.filter(x => x.tokusei === tokusei)
-    } else {
+    if (tokusei===null) {
       ctx.result_2 = ctx.result_1
+    } else {
+      ctx.result_2 = ctx.result_1.filter(x => x.tokusei === tokusei)
     }
     await next()
   },
   async(ctx, next) => {
-    let takasa = ctx.request.body.tag.height
+    let takasa = (ctx.request.body.tag.height.length>0) ? ctx.request.body.tag.height.map(x=>x.tag) : ctx.request.body.tag.height
     let low = 0,
       normal = 1.1,
       high = 2.1
@@ -206,21 +206,29 @@ router.post('/filter/:p',
     await next()
   },
   async(ctx, next) => {
-    let omosa = ctx.request.body.tag.weight
+    let omosa = (ctx.request.body.tag.weight.length>0) ? ctx.request.body.tag.weight.map(x=>x.tag) : ctx.request.body.tag.weight
     let light = 0,
       normal = 35.1,
       heavy = 100
     if (omosa.length>0) {
-      ctx.result_4 = ctx.result_3.filter(x => {
-        switch (omosa) {
-        case 'light':
-          return x.omosa >= light && x.omosa < normal
-        case 'normal':
-          return x.omosa < heavy && x.omosa >= normal
-        case 'heavy':
-          return x.omosa >= heavy
-        }
+      let array = []
+      for(let i=0;i<omosa.length;i++){
+        ctx.result_3.forEach((elm) => {
+          if(omosa[i]==='light' && elm.omosa >= light && elm.omosa < normal){
+            array.push(elm)
+          }else if (omosa[i]==='normal' && elm.omosa < heavy && elm.omosa >= normal) {
+            array.push(elm)
+          }else if (omosa[i]==='heavy' && elm.omosa >= heavy) {
+            array.push(elm)
+          }
+        })
+      }
+      array.sort(function(a, b) {
+        a = parseInt(a.zukan_no, 10);
+        b = parseInt(b.zukan_no, 10);
+        return a - b;
       })
+      ctx.result_4 = array
     } else {
       ctx.result_4 = ctx.result_3
     }
@@ -228,27 +236,35 @@ router.post('/filter/:p',
   },
   async(ctx, next) => {
     let p = parseInt(ctx.params.p)
-    let region = ctx.request.body.tag.region
+    let region = (ctx.request.body.tag.region.length>0) ? ctx.request.body.tag.region.map(x=>x.tag) : ctx.request.body.tag.region
     if (region.length>0) {
-      ctx.result_5 = ctx.result_4.filter(x => {
-        let zukanNum = parseInt(x.zukan_no, 10)
-        switch (region) {
-        case 'kanto':
-          return zukanNum >= 1 && zukanNum <= 151
-        case 'jhoto':
-          return zukanNum >= 152 && zukanNum <= 251
-        case 'hoenn':
-          return zukanNum >= 252 && zukanNum <= 386
-        case 'sinnoh':
-          return zukanNum >= 387 && zukanNum <= 493
-        case 'isshu':
-          return zukanNum >= 494 && zukanNum <= 649
-        case 'kalos':
-          return zukanNum >= 650 && zukanNum <= 721
-        case 'arolla':
-          return zukanNum >= 722 && zukanNum <= 801
-        }
+      let array = []
+      for(let i=0;i<region.length;i++){
+        ctx.result_4.forEach((elm) => {
+          let zukanNum = parseInt(elm.zukan_no, 10)
+          if(region[i]==='kanto' && zukanNum >= 1 && zukanNum <= 151){
+            array.push(elm)
+          }else if (region[i]==='jhoto' && zukanNum >= 152 && zukanNum <= 251) {
+            array.push(elm)
+          }else if (region[i]==='hoenn' && zukanNum >= 252 && zukanNum <= 386) {
+            array.push(elm)
+          }else if (region[i]==='sinnoh' && zukanNum >= 387 && zukanNum <= 493) {
+            array.push(elm)
+          }else if (region[i]==='isshu' && zukanNum >= 494 && zukanNum <= 649) {
+            array.push(elm)
+          }else if (region[i]==='kalos' && zukanNum >= 650 && zukanNum <= 721) {
+            array.push(elm)
+          }else if (region[i]==='arolla' && zukanNum >= 722 && zukanNum <= 801) {
+            array.push(elm)
+          }
+        })
+      }
+      array.sort(function(a, b) {
+        a = parseInt(a.zukan_no, 10);
+        b = parseInt(b.zukan_no, 10);
+        return a - b;
       })
+      ctx.result_5 = array
     } else {
       ctx.result_5 = ctx.result_4
     }

@@ -8,6 +8,7 @@ import {initFetch} from './actions'
 import App from './App';
 import 'semantic-ui-css/semantic.min.css';
 import registerServiceWorker from './registerServiceWorker';
+import {BrowserRouter as Router} from 'react-router-dom'
 
 const composeEnhancers =
   typeof window === 'object' &&
@@ -19,9 +20,11 @@ let store = createStore(reducer,composeEnhancers(applyMiddleware(thunk)))
 
 store.dispatch(initFetch(store.getState().page,store.dispatch))
 ReactDOM.render(
-	<Provider store={store}>
-		<App />
-	</Provider>, 
+	<Router>
+		<Provider store={store}>
+			<App />
+		</Provider>
+	</Router>, 
 	document.getElementById('root')
 )
 registerServiceWorker();

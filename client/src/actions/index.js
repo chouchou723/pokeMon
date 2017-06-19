@@ -8,9 +8,11 @@ export const LOADING = 'LOADING'
 export const RANDOM_FETCH = 'RANDOM_FETCH'
 export const FILTER_FETCH = 'FILTER_FETCH'
 export const FILTER_CLICK_HEIGHT = 'FILTER_CLICK_HEIGHT'
+export const RESET_FETCH = 'RESET_FETCH'
+export const FILTER_CLICK_RESET = 'FILTER_CLICK_RESET'
 
-const baseUrl = 'http://localhost:3000'
-// const baseUrl = 'http://10.220.196.18:3000'
+// const baseUrl = 'http://localhost:3000'
+const baseUrl = 'http://10.220.196.18:3000'
 
 const requestData = (p, type) =>
   dispatch => {
@@ -58,7 +60,7 @@ const postFilterData = (p,val, type) =>
       type:val.type.filter(x=>x.isActive===true),
       height:val.height.filter(x=>x.isActive===true),
       weight:val.weight.filter(x=>x.isActive===true),
-      feature:'',
+      feature:val.feature,
       region:val.region.filter(x=>x.isActive===true)
     }
     dispatch({ type: LOADING })
@@ -112,6 +114,12 @@ const randomFetch = (val,startId,endId,type) =>
 export const initFetch = (dispatch) => dispatch => {
   dispatch({type: EMPTY_DATA})
   dispatch(requestData(0, GET_DATA))
+}
+
+export const resetFetch = (dispatch) => dispatch => {
+  dispatch({type: EMPTY_DATA})
+  dispatch({type: FILTER_CLICK_RESET})
+  dispatch(requestData(0, RESET_FETCH))
 }
 
 export const random = () => dispatch => {
