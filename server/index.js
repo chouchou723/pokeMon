@@ -75,8 +75,8 @@ router.get('/top_zukan', async(ctx, next) => {
   ctx.body = await file;
 })
 
-router.post('/detail', async(ctx, next) => {
-  let link = ctx.request.body.link
+router.get('/detail/:link', async(ctx, next) => {
+  let link = ctx.params.link
   const getDetail = (link) => new Promise((resolve, reject) => axios.get(`http://www.pokemon.jp/zukan/detail/${link}`)
     .then(res => {
       const $ = cheerio.load(res.data)
@@ -101,7 +101,16 @@ router.post('/detail', async(ctx, next) => {
             name: $(el).find('.name').text()
           }
         }).get(),
-        evolution: $('.evolution .list').children('li').map((i, el) => {
+        evolution: $('.evolution>.list').children('li').map((i, el) => {
+          if ($(el).attr('class')==="row") return 
+          return {
+            link: $(el).children('a').attr('href').replace('/zukan/detail/', ''),
+            img: $(el).find('img').attr('src'),
+            num: $(el).find('.num').text(),
+            name: $(el).find('.name').text()
+          }
+        }).get(),
+        evolution_branch:$('.evolution>.list>.row>.list').children('li').map((i, el) => {
           return {
             link: $(el).children('a').attr('href').replace('/zukan/detail/', ''),
             img: $(el).find('img').attr('src'),

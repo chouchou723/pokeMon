@@ -126,11 +126,28 @@ const filter = (state = filterInit, action) => {
       return state
   }
 }
+const detailFetch = (state = {data:[]}, action) => {
+    switch (action.type) {
+      case  'DETAIL_FETCH':
+        return {
+          ...state,
+          data:action.data
+        }
+      case 'EMPTY_DETAIL_DATA':
+        return {
+          ...state,
+          data:[]
+        }
+      default:
+        return state
+    }
+  }
 
 const reducer = combineReducers({
   fetch,
   loadingDisplay,
-  filter
+  filter,
+  detailFetch
 })
 
 export default reducer

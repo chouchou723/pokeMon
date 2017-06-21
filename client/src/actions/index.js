@@ -10,6 +10,7 @@ export const FILTER_FETCH = 'FILTER_FETCH'
 export const FILTER_CLICK_HEIGHT = 'FILTER_CLICK_HEIGHT'
 export const RESET_FETCH = 'RESET_FETCH'
 export const FILTER_CLICK_RESET = 'FILTER_CLICK_RESET'
+export const DETAIL_FETCH = 'DETAIL_FETCH'
 
 // const baseUrl = 'http://localhost:3000'
 const baseUrl = 'http://10.220.196.18:3000'
@@ -148,6 +149,19 @@ export const filterClick = (i,type) => dispatch => {
     feature:i
   })
 }
+export const detailFetch = link => 
+  dispatch => {
+      fetch(`${baseUrl}/api/detail/${link}`)
+      .then(res => res.json())
+      .then(json => {
+          dispatch({
+            type: DETAIL_FETCH,
+            data: json
+          })
+        }
+      )
+  }
+
 
 export const moreFetch = (p, val, howFetch) => dispatch => {
   switch (howFetch) {
