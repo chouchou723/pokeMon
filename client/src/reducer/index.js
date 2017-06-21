@@ -16,6 +16,19 @@ let filterInit = {
   feature:null,
   region:region.map(item => ({tag:item.value,isActive:false}))
 }
+let detailInit = {
+  data:{
+    num: "",
+    name: "",
+    profilePhoto: "",
+    type: "",
+    weaknesses: "",
+    details: [],
+    pokemonForm: [],
+    evolution: [],
+    evolution_branch:[]
+  }
+}
 
 const fetch = (state = initState, action) => {
   switch (action.type) {
@@ -126,7 +139,7 @@ const filter = (state = filterInit, action) => {
       return state
   }
 }
-const detailFetch = (state = {data:[]}, action) => {
+const detailFetch = (state = detailInit, action) => {
     switch (action.type) {
       case  'DETAIL_FETCH':
         return {
@@ -136,7 +149,17 @@ const detailFetch = (state = {data:[]}, action) => {
       case 'EMPTY_DETAIL_DATA':
         return {
           ...state,
-          data:[]
+          data:{
+              num: "",
+              name: "",
+              profilePhoto: "",
+              type: "",
+              weaknesses: "",
+              details: [],
+              pokemonForm: [],
+              evolution: [],
+              evolution_branch:[]
+            }
         }
       default:
         return state
