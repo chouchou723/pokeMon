@@ -12,8 +12,8 @@ export const RESET_FETCH = 'RESET_FETCH'
 export const FILTER_CLICK_RESET = 'FILTER_CLICK_RESET'
 export const DETAIL_FETCH = 'DETAIL_FETCH'
 
-const baseUrl = 'http://localhost:3000'
-// const baseUrl = 'http://10.220.196.18:3000'
+// const baseUrl = 'http://localhost:3000'
+const baseUrl = 'http://10.220.196.18:3000'
 
 const requestData = (p, type) =>
   dispatch => {

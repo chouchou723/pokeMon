@@ -10,7 +10,12 @@ class Detail extends Component {
     this.match = this.props.match
   }
   componentDidMount() {
-    this.props.dispatch(detailFetch(this.match.params.link))
+    this.props.dispatch(detailFetch(this.props.match.params.link))
+  }
+  componentWillReceiveProps(nextProps) {
+    if(nextProps.match.params.link !== this.props.match.params.link){
+      this.props.dispatch(detailFetch(nextProps.match.params.link))
+    }
   }
   componentWillUnmount() {
     this.props.dispatch({type: 'EMPTY_DETAIL_DATA' })
@@ -61,7 +66,7 @@ class Detail extends Component {
           <Grid.Row>
             <p>すがた</p>
             {data.pokemonForm.map(item => (
-                        <Link to={`${item.link}`} key={item.link}>
+                        <Link to={`/detail/${item.link}`} key={item.link}>
                         <Card centered link>
                           <Image src={`http://www.pokemon.jp${item.img}`} className="hidden-xs" />
                           <Card.Content>
@@ -80,7 +85,7 @@ class Detail extends Component {
           <Grid.Row>
             <p>進 化</p>
             {data.evolution.map(item => (
-                        <Link to={`${item.link}`} key={item.link}>
+                        <Link to={`/detail/${item.link}`} key={item.link}>
                         <Card centered link>
                           <Image src={`http://www.pokemon.jp${item.img}`} className="hidden-xs" />
                           <Card.Content>
@@ -109,5 +114,5 @@ const mapStateToProps = (state) => {
 }
 
 
-export default connect(mapStateToProps)(Detail)
 
+export default connect(mapStateToProps)(Detail)
