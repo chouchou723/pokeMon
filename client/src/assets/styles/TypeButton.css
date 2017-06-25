@@ -1,0 +1,66 @@
+span.pokemon-type{
+  color: white;
+}
+span.pokemon-type.ty1 {
+  background: #b1b1b1;
+}
+span.pokemon-type.ty2 {
+  background: #e4653f;
+}
+span.pokemon-type.ty3 {
+  background: #50abda;
+}
+span.pokemon-type.ty4 {
+  background: #9ac30e;
+}
+span.pokemon-type.ty5 {
+  background: #e8c71a;
+}
+span.pokemon-type.ty6 {
+  background: #53c4e5;
+}
+span.pokemon-type.ty7 {
+  background: #e99a3f;
+}
+span.pokemon-type.ty8 {
+  background: #ba79c1;
+}
+span.pokemon-type.ty9 {
+  background: #c8a841;
+}
+span.pokemon-type.ty10 {
+  background: #5e9fe2;
+}
+span.pokemon-type.ty11 {
+  background: #e885b2;
+}
+span.pokemon-type.ty12 {
+  background: #6cbe50;
+}
+span.pokemon-type.ty13 {
+  background: #b08754;
+}
+span.pokemon-type.ty14 {
+  background: #756eb4;
+}
+span.pokemon-type.ty15 {
+  background: #6c81c8;
+}
+span.pokemon-type.ty16 {
+  background: #5a3c1e;
+}
+span.pokemon-type.ty17 {
+  background: #919191;
+}
+span.pokemon-type.ty18 {
+  background: #e06cbb;
+}
+span.pokemon-type.big {
+  width: 110px;
+}
+span.pokemon-type.normal {
+  width: 90px;
+}
+span.pokemon-type.mini {
+  width: 60px;
+}

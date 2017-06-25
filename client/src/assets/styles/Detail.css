@@ -1,0 +1,44 @@
+ul{
+  list-style-type: none;
+  display: flex;
+  flex-wrap: wrap;
+}
+ul>li{
+  margin-right: 5px;
+  margin-bottom: 5px;
+}
+.pokemon-form>li>a,.evolution>li>a,.evolution_branch>li>a{
+  color: #000;
+}
+.pokemon-form>li,.evolution>li,.evolution_branch>li{
+  margin: 0 3px;
+}
+.ui.celled.grid>.row{
+  display: block;
+}
+.evolution>li,.evolution_branch>li{
+  position: relative;
+}
+.evolution>li+li,.evolution_branch>li{
+  margin-left: 25px;
+}
+.evolution>li+li>a>.img:after{
+  content: "";
+  width: 0;
+  height: 0;
+  border: 10px solid transparent;
+  border-left: 12px solid #ffd400;
+  position: absolute;
+  top: 34px;
+  left: -18px;
+}
+.evolution_branch>li>a>.img:after{
+  content: "";
+  width: 0;
+  height: 0;
+  border: 10px solid transparent;
+  border-left: 12px solid #ffd400;
+  position: absolute;
+  top: 34px;
+  left: -18px;
+}

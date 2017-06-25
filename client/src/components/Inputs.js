@@ -17,8 +17,6 @@ const Inputs = ({ dispatch, page}) => {
 
 }
 
-
-
 const mapStateToProps = (state) => {
   return {
     page: state.page,

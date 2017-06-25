@@ -4,7 +4,8 @@ export const GET_DATA = 'GET_DATA'
 export const MORE_FETCH = 'MORE_FETCH'
 export const SEARCH_FETCH = 'SEARCH_FETCH'
 export const EMPTY_DATA = 'EMPTY_DATA'
-export const LOADING = 'LOADING'
+export const LOADING_ON = 'LOADING_ON'
+export const LOADING_OFF = 'LOADING_OFF'
 export const RANDOM_FETCH = 'RANDOM_FETCH'
 export const FILTER_FETCH = 'FILTER_FETCH'
 export const FILTER_CLICK_HEIGHT = 'FILTER_CLICK_HEIGHT'
@@ -14,11 +15,11 @@ export const DETAIL_FETCH = 'DETAIL_FETCH'
 
 // const baseUrl = 'http://localhost:3000'
 // const baseUrl = 'http://10.220.196.18:3000'
-const baseUrl = 'https://pokemonserver-rzeuaqpubu.now.sh'
+const baseUrl = 'https://pokemonserver-rzozwnyqua.now.sh'
 
 const requestData = (p, type) =>
   dispatch => {
-    dispatch({type: LOADING})
+    dispatch({type: LOADING_ON})
     fetch(`${baseUrl}/api/init/${p}`)
     .then(res => res.json())
     .then(json => {
@@ -26,7 +27,7 @@ const requestData = (p, type) =>
           type: type,
           json: json
         })
-        dispatch({type: LOADING})
+        dispatch({type: LOADING_OFF})
       }
     )
 
@@ -34,7 +35,7 @@ const requestData = (p, type) =>
 
 const postData = (p, val, type) =>
   dispatch => {
-    dispatch({ type: LOADING })
+    dispatch({ type: LOADING_ON })
     fetch(`${baseUrl}/api/search/${p}`, {
       method: 'POST',
       headers: {
@@ -51,7 +52,7 @@ const postData = (p, val, type) =>
             json: json,
             val: val
           })
-          dispatch({type: LOADING})
+          dispatch({type: LOADING_OFF})
         }
       )
   }
@@ -65,7 +66,7 @@ const postFilterData = (p,val, type) =>
       feature:val.feature,
       region:val.region.filter(x=>x.isActive===true)
     }
-    dispatch({ type: LOADING })
+    dispatch({ type: LOADING_ON })
     fetch(`${baseUrl}/api/filter/${p}`, {
       method: 'POST',
       headers: {
@@ -82,13 +83,13 @@ const postFilterData = (p,val, type) =>
         json: json,
         val: val
       })
-      dispatch({ type: LOADING })
+      dispatch({ type: LOADING_OFF })
     })
   }
 
 const randomFetch = (val,startId,endId,type) =>
   async dispatch => {
-    dispatch({type: LOADING})
+    dispatch({type: LOADING_ON})
     let items = []
     for(let i=startId;i<endId;i++){
       await fetch(`${baseUrl}/api/random`, {
@@ -109,7 +110,7 @@ const randomFetch = (val,startId,endId,type) =>
     val: val,
     nopage: (endId===val.length) ? true : false
   })
-  dispatch({type: LOADING})
+  dispatch({type: LOADING_OFF})
 }
 
 
@@ -152,6 +153,7 @@ export const filterClick = (i,type) => dispatch => {
 }
 export const detailFetch = link =>
   dispatch => {
+      dispatch({type: LOADING_ON})
       fetch(`${baseUrl}/api/detail/${link}`)
       .then(res => res.json())
       .then(json => {
@@ -159,6 +161,7 @@ export const detailFetch = link =>
             type: DETAIL_FETCH,
             data: json
           })
+          dispatch({type: LOADING_OFF})
         }
       )
   }

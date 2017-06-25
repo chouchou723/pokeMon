@@ -19,6 +19,10 @@ app
   .use(router.allowedMethods())
 
 axios.defaults.url = 'http://www.pokemon.jp/zukan/scripts/data/top_zukan.json'
+// axios.defaults.proxy ={
+//   host: '127.0.0.1',
+//   port: 1080
+// }
 
 const fetch_top_zukan = axios.create({
   method: 'get',
@@ -77,8 +81,8 @@ router.get('/detail/:link', async(ctx, next) => {
         num: $('.title .num').text(),
         name: $('.title .name').text(),
         profilePhoto: $('.profile-phto img').attr('src'),
-        type: $('.type .pokemon-type li a span').map((i, el) => $(el).text()).get().join(','),
-        weaknesses: $('.weaknesses .pokemon-type li a span').map((i, el) => $(el).text()).get().join(','),
+        type: $('.type .pokemon-type li a span').map((i, el) => $(el).text().replace(' ','')).get().join(','),
+        weaknesses: $('.weaknesses .pokemon-type li a').map((i, el) => $(el).text().replace(/\s/gi,'')).get().join(','),
         details: [
           $('.pokemon-details').find('.details').eq(0).find('li').eq(0).find('p').eq(1).text(),
           $('.pokemon-details').find('.details').eq(0).find('li').eq(1).find('.txts').eq(0).find('p').text(),
@@ -91,7 +95,8 @@ router.get('/detail/:link', async(ctx, next) => {
             link: $(el).children('a').attr('href').replace('/zukan/detail/', ''),
             img: $(el).find('img').attr('src'),
             num: $(el).find('.num').text(),
-            name: $(el).find('.name').text()
+            name: $(el).find('.name').text(),
+            type: $(el).find('.pokemon-type>li').find('p').map((i, el) => $(el).text().replace(' ','')).get().join(','),
           }
         }).get(),
         evolution: $('.evolution>.list').children('li').map((i, el) => {
@@ -100,7 +105,8 @@ router.get('/detail/:link', async(ctx, next) => {
             link: $(el).children('a').attr('href').replace('/zukan/detail/', ''),
             img: $(el).find('img').attr('src'),
             num: $(el).find('.num').text(),
-            name: $(el).find('.name').text()
+            name: $(el).find('.name').text(),
+            type: $(el).find('.pokemon-type>li').find('p').map((i, el) => $(el).text().replace(' ','')).get().join(','),
           }
         }).get(),
         evolution_branch:$('.evolution>.list>.row>.list').children('li').map((i, el) => {
@@ -108,9 +114,12 @@ router.get('/detail/:link', async(ctx, next) => {
             link: $(el).children('a').attr('href').replace('/zukan/detail/', ''),
             img: $(el).find('img').attr('src'),
             num: $(el).find('.num').text(),
-            name: $(el).find('.name').text()
+            name: $(el).find('.name').text(),
+            type: $(el).find('.pokemon-type>li').find('p').map((i, el) => $(el).text().replace(' ','')).get().join(','),
           }
-        }).get()
+        }).get(),
+        prev: $('.pokemon-page>div').hasClass('prev')?$('.pokemon-page>.prev>a').attr('href').replace('/zukan/detail/', ''):null,
+        next: $('.pokemon-page>div').hasClass('next')?$('.pokemon-page>.next>a').attr('href').replace('/zukan/detail/', ''):null
       })
     })
     .catch(err => reject(err))
@@ -173,7 +182,7 @@ router.post('/filter/:p',
     if (tokusei===null) {
       ctx.result_2 = ctx.result_1
     } else {
-      ctx.result_2 = ctx.result_1.filter(x => x.tokusei === tokusei)
+      ctx.result_2 = ctx.result_1.filter(x => x.tokusei.includes(tokusei))
     }
     await next()
   },

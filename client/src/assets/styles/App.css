@@ -1,4 +1,7 @@
 .ui.grid.filterGroup>.row>.column{
   margin-top: 1rem;
-
+}
+*{
+  margin: 0;
+  padding: 0;
 }

@@ -23,7 +23,7 @@ let detailInit = {
     profilePhoto: "",
     type: "",
     weaknesses: "",
-    details: [],
+    details: ['','','','',''],
     pokemonForm: [],
     evolution: [],
     evolution_branch:[]
@@ -93,8 +93,10 @@ const fetch = (state = initState, action) => {
 }
 const loadingDisplay = (state = false, action) => {
   switch (action.type) {
-    case  'LOADING':
-      return !state
+    case  'LOADING_ON':
+      return true
+    case  'LOADING_OFF':
+      return false
     default:
       return state
   }
@@ -155,7 +157,7 @@ const detailFetch = (state = detailInit, action) => {
               profilePhoto: "",
               type: "",
               weaknesses: "",
-              details: [],
+              details: ['','','','',''],
               pokemonForm: [],
               evolution: [],
               evolution_branch:[]

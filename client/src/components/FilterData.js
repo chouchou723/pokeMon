@@ -1,4 +1,5 @@
 export const feature = [
+{key:'特性を選ぶ',text:'特性を選ぶ',value:''},
 {key:'ＡＲシステム',text:'ＡＲシステム',value:'ＡＲシステム'},
 {key:'アイスボディ',text:'アイスボディ',value:'アイスボディ'},
 {key:'あくしゅう',text:'あくしゅう',value:'あくしゅう'},
@@ -210,12 +211,12 @@ export const feature = [
 ]
 
 export const region = [
-{text:'カントー地方',value:'kanto'}, 
-{text:'ジョウト地方',value:'jhoto'}, 
-{text:'ホウエン地方',value:'hoenn'}, 
-{text:'シンオウ地方',value:'sinnoh'}, 
-{text:'イッシュ地方',value:'isshu'}, 
-{text:'カロス地方',value:'kalos'}, 
+{text:'カントー地方',value:'kanto'},
+{text:'ジョウト地方',value:'jhoto'},
+{text:'ホウエン地方',value:'hoenn'},
+{text:'シンオウ地方',value:'sinnoh'},
+{text:'イッシュ地方',value:'isshu'},
+{text:'カロス地方',value:'kalos'},
 {text:'アローラ地方',value:'arolla'}
 ]
 
