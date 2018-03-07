@@ -1,6 +1,7 @@
 const Koa = require('koa')
 const bodyParser = require('koa-bodyparser')
 const Router = require('koa-router')
+const staticServer = require('koa-static')
 const axios = require('axios')
 const fs = require("fs")
 const cors = require('kcors')
@@ -9,10 +10,11 @@ const qs = require('qs')
 
 const app = new Koa()
 const router = new Router({
-  prefix: '/api'
+  // prefix: '/api'
 })
 
 app
+  .use(staticServer(__dirname + '/Portfolio-page'))
   .use(cors())
   .use(bodyParser())
   .use(router.routes())
@@ -34,7 +36,6 @@ const DL_top_zukan = axios.create({
 const pokemon_wiki = axios.create({
   method: 'get',
 });
-
 
 
 const jsonPath = `${__dirname}/top_zukan.json`
@@ -67,12 +68,19 @@ if (fs.existsSync(jsonPath)) {
     })
 }
 
+router.get('/',(ctx, next) => {
+    // ctx.type = 'application/json';
+  // ctx.body = await 'aa';
+ ctx.type = 'html';
+  ctx.body = fs.createReadStream('./Portfolio-page/chouchou.html');
+});
+
 router.get('/top_zukan', async(ctx, next) => {
   ctx.type = 'application/json';
   ctx.body = await file;
 })
 
-router.get('/detail/:link', async(ctx, next) => {
+router.get('/api/detail/:link', async(ctx, next) => {
   let link = ctx.params.link
   const getDetail = (link) => new Promise((resolve, reject) => axios.get(`http://www.pokemon.jp/zukan/detail/${link}`)
     .then(res => {
@@ -128,7 +136,7 @@ router.get('/detail/:link', async(ctx, next) => {
   ctx.body = await getDetail(link)
 })
 
-router.post('/search/:p', async(ctx, next) => {
+router.post('/api/search/:p', async(ctx, next) => {
   let p = parseInt(ctx.params.p)
   let search = ctx.request.body.search
   let result_file = file.filter(x => {
@@ -152,7 +160,7 @@ router.post('/search/:p', async(ctx, next) => {
   }
 })
 
-router.post('/random', async(ctx, next) => {
+router.post('/api/random', async(ctx, next) => {
   let random = ctx.request.body.random
   let arr
   await axios.post('http://www.pokemon.jp/api.php', qs.stringify(random))
@@ -163,7 +171,7 @@ router.post('/random', async(ctx, next) => {
 })
 
 
-router.post('/filter/:p',
+router.post('/api/filter/:p',
   async(ctx, next) => {
     let type = (ctx.request.body.tag.type.length>0) ? ctx.request.body.tag.type.map(x=>x.tag) : ctx.request.body.tag.type
     if (type.length === 1) {
@@ -294,7 +302,7 @@ router.post('/filter/:p',
     }
   })
 
-router.get('/init/:p', async(ctx, next) => {
+router.get('/api/init/:p', async(ctx, next) => {
   let p = parseInt(ctx.params.p)
   let lastPage = Math.ceil(file.length / 12)
   let arr = []
