@@ -24,4 +24,16 @@ const mapStateToProps = (state) => {
   }
 }
 
+
+// function * loginFlow(){//saga take监听行为,fork异步调用,cancle取消之前的行为,call同步调用
+//   while(true){
+//     const {user,pass} = yield take('REQ_LO');
+//     const task = yield fork(api.a,user,pass);
+//     const action = yield take(['LOGOUT','LOG_ERRO']);
+//     if(action.type == 'LOGOUT'){
+//         yield cancel (task);
+//         yield call(api.clearItem('token'))
+//     }
+//   }
+// }
 export default connect(mapStateToProps)(Inputs)
