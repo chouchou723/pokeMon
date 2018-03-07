@@ -8570,6 +8570,16 @@
         "tokusei" : "するどいめ,やるき"
 },
    {
+        "zukan_no" : "745",
+        "sub_id" : "2",
+        "pokemon_name" : "ルガルガン",
+        "sub_name" : "たそがれのすがた",
+        "type" : "いわ",
+        "takasa" : 0.8,
+        "omosa" : 25.0,
+        "tokusei" : "かたいツメ"
+},
+   {
         "zukan_no" : "746",
         "sub_id" : "",
         "pokemon_name" : "ヨワシ",
@@ -9140,6 +9150,36 @@
         "tokusei" : "プリズムアーマー"
 },
    {
+        "zukan_no" : "800",
+        "sub_id" : "1",
+        "pokemon_name" : "ネクロズマ",
+        "sub_name" : "たそがれのたてがみ",
+        "type" : "エスパー,はがね",
+        "takasa" : 3.8,
+        "omosa" : 460.0,
+        "tokusei" : "プリズムアーマー"
+},
+   {
+        "zukan_no" : "800",
+        "sub_id" : "2",
+        "pokemon_name" : "ネクロズマ",
+        "sub_name" : "あかつきのつばさ",
+        "type" : "エスパー,ゴースト",
+        "takasa" : 4.2,
+        "omosa" : 350.0,
+        "tokusei" : "プリズムアーマー"
+},
+   {
+        "zukan_no" : "800",
+        "sub_id" : "3",
+        "pokemon_name" : "ネクロズマ",
+        "sub_name" : "ウルトラネクロズマ",
+        "type" : "エスパー,ドラゴン",
+        "takasa" : 7.5,
+        "omosa" : 230.0,
+        "tokusei" : "ブレインフォース"
+},
+   {
         "zukan_no" : "801",
         "sub_id" : "",
         "pokemon_name" : "マギアナ",
@@ -9148,5 +9188,55 @@
         "takasa" : 1.0 ,
         "omosa" : 80.5 ,
         "tokusei" : "ソウルハート"
+},
+   {
+        "zukan_no" : "802",
+        "sub_id" : "",
+        "pokemon_name" : "マーシャドー",
+        "sub_name" : "",
+        "type" : "かくとう,ゴースト",
+        "takasa" : 0.7,
+        "omosa" : 22.2,
+        "tokusei" : "テクニシャン"
+},
+   {
+        "zukan_no" : "803",
+        "sub_id" : "",
+        "pokemon_name" : "ベベノム",
+        "sub_name" : "",
+        "type" : "どく",
+        "takasa" : 0.6,
+        "omosa" : 1.8,
+        "tokusei" : "ビーストブースト"
+},
+   {
+        "zukan_no" : "804",
+        "sub_id" : "",
+        "pokemon_name" : "アーゴヨン",
+        "sub_name" : "",
+        "type" : "どく,ドラゴン",
+        "takasa" : 3.6,
+        "omosa" : 150.0,
+        "tokusei" : "ビーストブースト"
+},
+   {
+        "zukan_no" : "805",
+        "sub_id" : "",
+        "pokemon_name" : "ツンデツンデ",
+        "sub_name" : "",
+        "type" : "いわ,はがね",
+        "takasa" : 5.5,
+        "omosa" : 820.0,
+        "tokusei" : "ビーストブースト"
+},
+   {
+        "zukan_no" : "806",
+        "sub_id" : "",
+        "pokemon_name" : "ズガドーン",
+        "sub_name" : "",
+        "type" : "ほのお,ゴースト",
+        "takasa" : 1.8,
+        "omosa" : 13.0,
+        "tokusei" : "ビーストブースト"
 }
 ]

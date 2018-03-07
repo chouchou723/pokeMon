@@ -15,7 +15,8 @@
     "kcors": "^2.2.1",
     "koa": "^2.2.0",
     "koa-bodyparser": "^3.2.0",
-    "koa-router": "next"
+    "koa-router": "next",
+    "koa-static": "^4.0.2"
   },
   "devDependencies": {}
 }
