@@ -71,7 +71,7 @@ if (fs.existsSync(jsonPath)) {
 router.get('/',(ctx, next) => {
     // ctx.type = 'application/json';
   // ctx.body = await 'aa';
- ctx.type = 'html';
+ // ctx.type = 'html';
   ctx.body = fs.createReadStream('./Portfolio-page/chouchou.html');
 });
 
