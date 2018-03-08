@@ -14,7 +14,9 @@ const router = new Router({
 })
 
 app
-  .use(serve(__dirname))
+  .use(serve('.'))
+  .use(serve(__dirname+'/Portfolio-page'))
+  .use(serve(__dirname+'/Portfolio-page/build'))
   .use(cors())
   .use(bodyParser())
   .use(router.routes())
