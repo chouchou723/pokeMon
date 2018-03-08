@@ -3,8 +3,9 @@ const bodyParser = require('koa-bodyparser')
 const Router = require('koa-router')
 const staticServer = require('koa-static')
 const axios = require('axios')
+const cacheControl = require('koa-cache-control');
 const fs = require("fs")
-const cors = require('kcors')
+const cors = require('koa2-cors')
 const cheerio = require('cheerio')
 const qs = require('qs')
 
@@ -12,13 +13,33 @@ const app = new Koa()
 const router = new Router({
   // prefix: '/api'
 })
+const maxage = {
+maxAge: 6000
+}
+app.use(cors({
+    // origin: function (ctx) {
+    //     if (ctx.url === '/test') {
+    //         return "*"; // 允许来自所有域名请求
+    //     }
+    //     return 'http://localhost:3000';
+    // },
+    // exposeHeaders: ['WWW-Authenticate', 'Server-Authorization'],
+    maxAge: 5000,
+    // credentials: true,
+    allowMethods: ['GET', 'POST', 'DELETE'],
+    allowHeaders: ['Content-Type', 'Authorization', 'Accept'],
+  }))
 
 app
   .use(staticServer(__dirname + '/Portfolio-page'))
-  .use(cors())
+  // .use(gzip())
+  .use(cacheControl({
+    maxAge: 6000
+})
   .use(bodyParser())
   .use(router.routes())
   .use(router.allowedMethods())
+  
 
 axios.defaults.url = 'http://www.pokemon.jp/zukan/scripts/data/top_zukan.json'
 // axios.defaults.proxy ={
