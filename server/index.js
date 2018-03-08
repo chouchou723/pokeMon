@@ -35,7 +35,7 @@ app
   // .use(gzip())
   .use(cacheControl({
     maxAge: 6000
-})
+}))
   .use(bodyParser())
   .use(router.routes())
   .use(router.allowedMethods())
