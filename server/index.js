@@ -1,9 +1,10 @@
 const Koa = require('koa')
+var path = require('path')
 const bodyParser = require('koa-bodyparser')
 const Router = require('koa-router')
 const staticServer = require('koa-static')
 const axios = require('axios')
-const cacheControl = require('koa-cache-control');
+// const cacheControl = require('koa-cache-control');
 const fs = require("fs")
 const cors = require('koa2-cors')
 const cheerio = require('cheerio')
@@ -13,9 +14,13 @@ const app = new Koa()
 const router = new Router({
   // prefix: '/api'
 })
-const maxage = {
-maxAge: 6000
-}
+const convert = require('koa-convert');
+const staticCache = require('koa-static-cache');
+
+//静态文件服务
+app.use(convert(staticCache(path.join(__dirname, 'Portfolio-page'), {
+    maxAge: 365 * 24 * 60 * 60
+})));
 app.use(cors({
     // origin: function (ctx) {
     //     if (ctx.url === '/test') {
@@ -33,9 +38,9 @@ app.use(cors({
 app
   .use(staticServer(__dirname + '/Portfolio-page'))
   // .use(gzip())
-  .use(cacheControl({
-    maxAge: 6000
-}))
+//   .use(cacheControl({
+//     maxAge: 6000
+// }))
   .use(bodyParser())
   .use(router.routes())
   .use(router.allowedMethods())
