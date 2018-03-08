@@ -1,7 +1,7 @@
 const Koa = require('koa')
 const bodyParser = require('koa-bodyparser')
 const Router = require('koa-router')
-const staticServer = require('koa-static')
+const serve = require('koa-static')
 const axios = require('axios')
 const fs = require("fs")
 const cors = require('kcors')
@@ -14,7 +14,7 @@ const router = new Router({
 })
 
 app
-  .use(staticServer(__dirname + '/Portfolio-page'))
+  .use(serve(__dirname))
   .use(cors())
   .use(bodyParser())
   .use(router.routes())
@@ -73,6 +73,13 @@ router.get('/',(ctx, next) => {
   // ctx.body = await 'aa';
  ctx.type = 'html';
   ctx.body = fs.createReadStream('./Portfolio-page/chouchou.html');
+});
+
+router.get('/pokemon',(ctx, next) => {
+    // ctx.type = 'application/json';
+  // ctx.body = await 'aa';
+ ctx.type = 'html';
+  ctx.body = fs.createReadStream('./Portfolio-page/build/index.html');
 });
 
 router.get('/top_zukan', async(ctx, next) => {
