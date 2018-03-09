@@ -346,9 +346,10 @@ router.get('/api/init/:p', async(ctx, next) => {
     noPage: (p + 1 === lastPage) ? true : false
   }
 })
-router.get('/weather', async(ctx, next) => {
+router.get('/weather/:p', async(ctx, next) => {
+  let city = ctx.params.p
   let arr 
-    await axios.get('http://api.jisuapi.com/weather/query?appkey=adfb0e1348ec0adf&city=%E5%AE%89%E9%A1%BA')
+    await axios.get('http://api.jisuapi.com/weather/query?appkey=adfb0e1348ec0adf',{params:{city:city}})
       .then(json => {
          arr = json.data
       })
