@@ -101,6 +101,7 @@ router.get('/',(ctx, next) => {
   ctx.body = fs.createReadStream('./Portfolio-page/chouchou.html');
 });
 
+
 router.get('/top_zukan', async(ctx, next) => {
   ctx.type = 'application/json';
   ctx.body = await file;
@@ -344,6 +345,16 @@ router.get('/api/init/:p', async(ctx, next) => {
     data: arr,
     noPage: (p + 1 === lastPage) ? true : false
   }
+})
+router.get('/weather', async(ctx, next) => {
+  let arr 
+    await axios.get('http://api.jisuapi.com/weather/query?appkey=adfb0e1348ec0adf&city=%E5%AE%89%E9%A1%BA')
+      .then(json => {
+         arr = json.data
+      })
+      .catch(err => console.log(err))
+   ctx.type = 'application/json';
+  ctx.body = arr
 })
 
 

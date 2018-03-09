@@ -95,7 +95,7 @@ img.icon {
 .intro_p {
   margin-top: 10px;
   font-size: 18px;
-  color: #31394d;
+  color: #ffffff;
   margin-top: 10%;
   text-shadow: 0 0 1px #eee;
   transition: 0.2s;
@@ -118,7 +118,8 @@ img.icon {
 .content-section-a {
   text-align: center;
   padding-top: 5%;
-  margin-bottom: 5%;
+  padding-bottom: 5%;
+  background: #3b4558
 }
 /* line 109, ../sass/chenyisha.scss */
 .content-section-a h1 {
@@ -167,6 +168,7 @@ img.icon {
   text-align: center;
   padding-top: 7%;
   padding-bottom: 7%;
+  position: relative;
 }
 /* line 147, ../sass/chenyisha.scss */
 .content-section-b h1 {
@@ -265,10 +267,12 @@ img.icon {
   margin-bottom: 20px;
 }
 /* line 226, ../sass/chenyisha.scss */
-.content-section-c .row, .content-section-d .row, .content-section-e .row {
+.content-section-c .row, .content-section-d .row {
   padding-bottom: 3%;
 }
-
+.content-section-e .row{
+  padding-bottom: 1%;
+}
 /* line 231, ../sass/chenyisha.scss */
 .content-section-d {
   background-color: #fdbb2c;
@@ -325,6 +329,8 @@ img.icon {
 /* line 274, ../sass/chenyisha.scss */
 .content-section-e {
   background-color: #fc4053;
+  padding-top: 0;
+  padding-bottom:0;
 }
 /* line 276, ../sass/chenyisha.scss */
 .content-section-e h1 {
@@ -333,6 +339,7 @@ img.icon {
 /* line 279, ../sass/chenyisha.scss */
 .content-section-e #lead-1 {
   margin-left: -88px;
+  text-align: center;
 }
 /* line 282, ../sass/chenyisha.scss */
 .content-section-e i {

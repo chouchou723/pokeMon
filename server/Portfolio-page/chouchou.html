@@ -10,6 +10,8 @@
     <!-- <link rel="stylesheet" href="stylesheets/fa.css"> -->
     <link rel='stylesheet' href = 'stylesheets/chouchou.css' />
      <link rel='stylesheet' href = 'an.css' />
+      <!-- <link rel="stylesheet" href="stylesheets/normalize.css"> -->
+    <link rel="stylesheet" href="stylesheets/style.css" media="screen" type="text/css">
   </head>
   <body>
   <!--Navigation -->
@@ -92,6 +94,7 @@
     <!-- /.content-section-b -->
   <div id='showskill'> 
     <div id="vector-art" class="content-section-b">
+      <canvas id="canvastar" style='position: absolute;top: 0;left: 0'></canvas>
         <div class="container">
             <div class="row">
                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">                   
@@ -136,7 +139,35 @@
  
 
   <!-- /.content-section-d -->
-   
+   <div class="body--ready" style="position: relative;">
+  
+<canvas class="canvas" width="1073" height="900"></canvas>
+
+<div class="help" style="display: none">?</div> 
+
+<div class="ui" style="display: none;">
+  <input class="ui-input" type="text">
+  <span class="ui-return">↵</span>
+</div>
+
+<div class="overlay">
+  <div class="tabs">
+    <div class="tabs-labels"><span class="tabs-label tabs-label--active">Commands</span><span class="tabs-label">Info</span><span class="tabs-label">Share</span></div>
+
+    <div class="tabs-panels">
+      <ul class="tabs-panel commands tabs-panel--active">
+        <li class="commands-item"><span class="commands-item-title">Text</span><span class="commands-item-info" data-demo="Hello :)">Type anything</span><span class="commands-item-action">Demo</span></li>
+        <li class="commands-item"><span class="commands-item-title">Countdown</span><span class="commands-item-info" data-demo="#countdown 10">#countdown<span class="commands-item-mode">number</span></span><span class="commands-item-action">Demo</span></li>
+        <li class="commands-item"><span class="commands-item-title">Time</span><span class="commands-item-info" data-demo="#time">#time</span><span class="commands-item-action">Demo</span></li>
+        <li class="commands-item"><span class="commands-item-title">Rectangle</span><span class="commands-item-info" data-demo="#rectangle 30x15">#rectangle<span class="commands-item-mode">width x height</span></span><span class="commands-item-action">Demo</span></li>
+        <li class="commands-item"><span class="commands-item-title">Circle</span><span class="commands-item-info" data-demo="#circle 25">#circle<span class="commands-item-mode">diameter</span></span><span class="commands-item-action">Demo</span></li>
+
+        <li class="commands-item commands-item--gap"><span class="commands-item-title">Animate</span><span class="commands-item-info" data-demo="The time is|#time|#countdown 3|#icon thumbs-up"><span class="commands-item-mode">command1</span>&nbsp;|<span class="commands-item-mode">command2</span></span><span class="commands-item-action">Demo</span></li>
+      </ul>
+    </div>
+  </div>
+</div>
+</div>
   
   
 
@@ -148,11 +179,11 @@
         <div class="container">
 
             <div class="row">
-                <div class="col-lg-12">
+                <div>
                     
                     <h1 class="section-heading">Contact me</h1>
-                   <p class="lead" id='lead-1'><i class="fa fa-phone-square"></i> 135-8574-9027</p>
-                   <p class="lead"> <i class='fa fa-envelope-open' style="margin-left:-31px"></i> 527835300@qq.com</p>
+                     <h2 class="section-heading">135-8574-9027</h2>
+                      <h2 class="section-heading">527835300@qq.com</h2>
                   
                
                 </div>
@@ -172,5 +203,7 @@
     <script type="text/javascript" src='particle.js'></script>
     <script type="text/javascript" src='hover.js'></script>
     <script type='text/javascript' src='scroll.js'></script>
+    <script type='text/javascript' src='star.js'></script>
+<script src="cabon.js"></script>
   </body>
 </html>
