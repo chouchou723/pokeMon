@@ -7,7 +7,7 @@ import thunk from 'redux-thunk'
 
 import App from './App';
 import 'semantic-ui-css/semantic.min.css';
-// import registerServiceWorker from './registerServiceWorker';
+import registerServiceWorker from './registerServiceWorker';
 import {BrowserRouter as Router} from 'react-router-dom'
 
 const composeEnhancers =
@@ -27,4 +27,4 @@ ReactDOM.render(
 	</Router>,
 	document.getElementById('root')
 )
-// registerServiceWorker();
+registerServiceWorker();
